@@ -60,38 +60,57 @@ begin
           if (int_x >= SFX and int_x <= SLX) then
             if (int_y >= FFY and int_y <= FLY) then  --cas d'un recouvrement
               outSel <= '1';
+              addrOut2 <= addrIn; 
               activeOut <= activeIn;
-              else
-                outSel <= '0';
-                activeOut <= activeIn;
+            else
+              outSel <= '0';
+              addrOut1 <= addrIn;
+              activeOut <= activeIn;
             end if;
 
           else
             outSel <= '0';
+            addrOut1 <= addrIn;
             activeOut <= activeIn; 
-           
+            
           end if;    
           outSel <= '0';
+          addrOut1 <= addrIn;
           activeOut <= activeIn;
-        end if;
-      else
-         if (int_x >= SFX and int_x <= SLX) then
+          
+        else
+          if (int_x >= SFX and int_x <= SLX) then
             if (int_y >= FFY and int_y <= FLY) then  --cas de la deuxième image
                                                      --au dessus ou en dessous
               outSel <= '1';
+              addrOut2 <= addrIn;
               activeOut <= activeIn;
-              else
-                activeOut <= '0';
+            else
+              activeOut <= '0';
             end if;
 
-         else
-           activeOut <= '0';   
-         end if;
+          else
+            activeOut <= '0';   
+          end if;
+        end if;
 
-    else
-     --to be continued
-    end if;
-    
+      else
+        if (int_x >= SFX and int_x <= SLX) then
+            if (int_y >= FFY and int_y <= FLY) then  --cas de la deuxième image
+                                                     --à gauche ou à droite
+              outSel <= '1';
+              addrOut2 <= addrIn;
+              activeOut <= activeIn;
+            else
+              activeOut <= '0';
+            end if;
+
+          else
+            activeOut <= '0';   
+          end if;
+      end if;
+     end if;
+      
   end process;
 
 end Behavioral; 
