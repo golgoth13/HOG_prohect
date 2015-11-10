@@ -9,16 +9,16 @@ public:
 
     //Constructeurs
     Image(int width, int height);
-    Image(int width, int height, int* image);
+    Image(int width, int height, unsigned char* image);
 
     //Accesseur
-    int* getImage();
+    unsigned char* getImage();
 
     //Affichage
     void affiche();
 private:
 
-    int* m_image;
+    unsigned char* m_image;
     int m_width;
     int m_height;
 

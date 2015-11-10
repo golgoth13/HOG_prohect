@@ -5,14 +5,14 @@ using namespace std;
 Image::Image(int width, int height)
         :m_width(width), m_height(height)
 {
-    m_image = new int[m_width*m_height];
+    m_image = new unsigned char[m_width*m_height];
     init();
 }
 
-Image::Image(int width, int height, int image[])
+Image::Image(int width, int height, unsigned char image[])
         :m_width(width), m_height(height)
 {
-    m_image = new int[m_width*m_height];
+    m_image = new unsigned char[m_width*m_height];
     for(int j = 0; j < m_height; j++) {
         for(int i = 0; i < m_width; i++) {
             m_image[i+m_width*j] = image[i+m_width*j];
@@ -20,7 +20,7 @@ Image::Image(int width, int height, int image[])
     }
 }
 
-int* Image::getImage()
+unsigned char* Image::getImage()
 {
     return m_image;
 }
