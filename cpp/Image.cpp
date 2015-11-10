@@ -1,8 +1,6 @@
 #include "Image.h"
 using namespace std;
 
-#define CELL_SIZE 4
-
 //Constructeurs
 Image::Image(int width, int height)
         :m_width(width), m_height(height)
