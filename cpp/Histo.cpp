@@ -26,11 +26,28 @@ void Histo::affiche()
     }
 }
 
-void Histo::init()
+void Histo::gradient_h(int grad[], int image[])
 {
     for(int j = 0; j < m_height; j++) {
         for(int i = 0; i < m_width; i++) {
-            m_histo[i+m_width*j] = 0;
+            if(i!=0 && i!=m_width-1 && j!=0 && j!=m_height-1) {
+                grad[i+m_width*j] = image[i+m_width*j+1] - image[i+m_width*j-1];
+            } else {
+                grad[i+m_width*j] = 0;
+            }
+        }
+    }
+}
+
+void Histo::gradient_v(int grad[], int image[])
+{
+    for(int j = 0; j < m_height; j++) {
+        for(int i = 0; i < m_width; i++) {
+            if(i!=0 && i!=m_width-1 && j!=0 && j!=m_height-1) {
+                grad[i+m_width*j] = image[i+m_width*(j+1)] - image[i+m_width*(j-1)];
+            } else {
+                grad[i+m_width*j] = 0;
+            }
         }
     }
 }
@@ -67,17 +84,17 @@ void Histo::calcul_arg(int grad_h[], int grad_v[], float arg[])
 
 void Histo::calcul_histo()
 {
-    int gradient_h[m_width*m_height];
-    int gradient_v[m_width*m_height];
+    int grad_h[m_width*m_height];
+    int grad_v[m_width*m_height];
 
     float norme[m_width*m_height];
     float arg[m_width*m_height];
 
-    m_img.gradient_h(gradient_h);
-    m_img.gradient_v(gradient_v);
+    gradient_h(grad_h, m_img.getImage());
+    gradient_v(grad_v, m_img.getImage());
 
-    calcul_norme(gradient_h, gradient_v, norme);
-    calcul_arg(gradient_h, gradient_v, arg);
+    calcul_norme(grad_h, grad_v, norme);
+    calcul_arg(grad_h, grad_v, arg);
 
     int i, j, k, m, n, classe, val, indice;
     float cell[N_CLASSES];

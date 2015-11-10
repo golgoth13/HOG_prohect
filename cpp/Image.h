@@ -11,12 +11,11 @@ public:
     Image(int width, int height);
     Image(int width, int height, int* image);
 
+    //Accesseur
+    int* getImage();
+
     //Affichage
     void affiche();
-
-    //Calcul des gradients
-    void gradient_h(int grad[]); // Calcule le gradient horizontal et le stocke dans grad
-    void gradient_v(int grad[]); // Calcule le gradient vertical et le stocke dans grad
 private:
 
     int* m_image;
