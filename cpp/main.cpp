@@ -5,8 +5,11 @@
 
 using namespace std;
 
-unsigned char * func(int* width, int* height){
-    ifstream fichier("../img/groupe1_160x120a.pgm", ios::in);
+int main()
+{
+    int large, haut;
+
+    ifstream fichier("../img/barbara.pgm", ios::in);
     if(!fichier) {
         cerr << "ça marche pas" << endl;
     }
@@ -16,29 +19,26 @@ unsigned char * func(int* width, int* height){
     fichier >> line1;
     cout << line1 << endl;
 
-    fichier >> *width;
-    fichier >> *height;
-    cout << *width << " " << *height << endl;
+    fichier >> large;
+    fichier >> haut;
+    cout << large << " " << haut << endl;
 
     fichier >> line3;
     cout << line3 << endl;
 
     int i = 0;
-    unsigned char img[(*width)*(*height)];
-    while(i < (*width)*(*height)) {
-        fichier >> img[i];
+    int tab[large*haut];
+    while(!fichier.eof()) {
+        fichier >> tab[i];
         i++;
     }
+    cout << "Fin du fichier" << endl;
     fichier.close();
-    return img;
-}
 
-int main()
-{
-    int large, haut;
-    unsigned char* tab;
-    tab = func(&large, &haut);
+
 
     Histo histo(large,haut,tab);
-    histo.affiche();
+    //histo.affiche();
+    histo.affiche_ascii();
+    histo.affiche_graphique();
 }
