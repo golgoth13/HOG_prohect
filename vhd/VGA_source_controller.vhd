@@ -13,7 +13,7 @@
 -- Dependencies: 
 --
 -- Revision: 
--- Revision 0.01 - File Created
+-- Revision 0.02 - File Created
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ entity VGA_source_controller is
     activeIn : in boolean;
     activeOut : out boolean;
     addrOut1 : out  std_logic_vector (16 downto 0) := (others => '0');
-    addrOut2 : out std_logic_vector (7 downto 0) := (others => '0');
+    addrOut2 : out std_logic_vector (12 downto 0) := (others => '0');
     outSel : out std_logic := '0';
     );
 
@@ -53,37 +53,58 @@ begin
   begin  -- process
     int_x := to_integer(unsigned(addrIn(9 downto 0)));
     int_y := to_integer(unsigned(addrIn(16 downto 10)));
+    variable pixel : coordonnee;
     if activeIn then
       
       if (int_x >= FFX and int_x <= FLX) then
         if (int_y >= FFY and int_y <= FLY) then
           if (int_x >= SFX and int_x <= SLX) then
-            if (int_y >= FFY and int_y <= FLY) then  --cas d'un recouvrement
+            if (int_y >= SFY and int_y <= SLY) then  --cas d'un recouvrement
               outSel <= '1';
-              addrOut2 <= addrIn; 
+              int_x := int_x - SFX;
+              int_y := int_y - SFY;
+              pixel.x := std_logic_vector(to_unsigned(int_x,7));
+              pixel.y := std_logic_vector(to_unsigned(int_y,6)); 
+              addrOut2 <=  pixel.y(5 downto 0) & pixel.x(6 downto 0); 
               activeOut <= activeIn;
             else
               outSel <= '0';
-              addrOut1 <= addrIn;
+              int_x := int_x - FFX;
+              int_y := int_y - FFY;
+              pixel.x := std_logic_vector(to_unsigned(int_x,10));
+              pixel.y := std_logic_vector(to_unsigned(int_y,9)); 
+              addrOut1 <=  pixel.y(8 downto 0) & pixel.x(9 downto 0);
               activeOut <= activeIn;
             end if;
 
           else
             outSel <= '0';
-            addrOut1 <= addrIn;
+            int_x := int_x - FFX;
+            int_y := int_y - FFY;
+            pixel.x := std_logic_vector(to_unsigned(int_x,10));
+            pixel.y := std_logic_vector(to_unsigned(int_y,9)); 
+            addrOut1 <=  pixel.y(8 downto 0) & pixel.x(9 downto 0);
             activeOut <= activeIn; 
             
           end if;    
           outSel <= '0';
-          addrOut1 <= addrIn;
+          int_x := int_x - FFX;
+          int_y := int_y - FFY;
+          pixel.x := std_logic_vector(to_unsigned(int_x,10));
+          pixel.y := std_logic_vector(to_unsigned(int_y,9)); 
+          addrOut1 <=  pixel.y(8 downto 0) & pixel.x(9 downto 0);
           activeOut <= activeIn;
           
         else
           if (int_x >= SFX and int_x <= SLX) then
-            if (int_y >= FFY and int_y <= FLY) then  --cas de la deuxième image
+            if (int_y >= SFY and int_y <= SLY) then  --cas de la deuxième image
                                                      --au dessus ou en dessous
               outSel <= '1';
-              addrOut2 <= addrIn;
+              int_x := int_x - SFX;
+              int_y := int_y - SFY;
+              pixel.x := std_logic_vector(to_unsigned(int_x,7));
+              pixel.y := std_logic_vector(to_unsigned(int_y,6)); 
+              addrOut2 <=  pixel.y(5 downto 0) & pixel.x(6 downto 0);
               activeOut <= activeIn;
             else
               activeOut <= '0';
@@ -96,10 +117,14 @@ begin
 
       else
         if (int_x >= SFX and int_x <= SLX) then
-            if (int_y >= FFY and int_y <= FLY) then  --cas de la deuxième image
+            if (int_y >= SFY and int_y <= SLY) then  --cas de la deuxième image
                                                      --à gauche ou à droite
               outSel <= '1';
-              addrOut2 <= addrIn;
+              int_x := int_x - SFX;
+              int_y := int_y - SFY;
+              pixel.x := std_logic_vector(to_unsigned(int_x,7));
+              pixel.y := std_logic_vector(to_unsigned(int_y,6)); 
+              addrOut2 <=  pixel.y(5 downto 0) & pixel.x(6 downto 0);              
               activeOut <= activeIn;
             else
               activeOut <= '0';

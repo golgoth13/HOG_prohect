@@ -80,7 +80,7 @@ begin
 			pixel.y := std_logic_vector(to_unsigned(int_y,9));
 			coord.x <= pixel.x; -- Mise à jour des coordonnées du pixel de l'image
 			coord.y <= pixel.y;
-			addr <= pixel.y(8 downto 1) & pixel.x(9 downto 1); -- Envoi de l'adresse de la case mémoire à lire
+			addr <= pixel.y(8 downto 0) & pixel.x(9 downto 0); -- Envoi de l'adresse de la case mémoire à lire
 			activeArea <= activeArea_v and activeArea_h;
 		end if;
 	end process;
