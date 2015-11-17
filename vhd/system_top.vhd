@@ -134,6 +134,25 @@ component mem_ram
            doutb : out STD_LOGIC_VECTOR(15 DOWNTO 0));
 end component mem_ram;
 
+component HOG_ram
+    Port ( clka : in STD_LOGIC;
+           wea : in STD_LOGIC_VECTOR(0 DOWNTO 0);
+           addra : in STD_LOGIC_VECTOR(12 DOWNTO 0);
+           dina : in STD_LOGIC_VECTOR(7 DOWNTO 0);
+           clkb : in STD_LOGIC;
+           addrb : in STD_LOGIC_VECTOR(12 DOWNTO 0);
+           doutb : out STD_LOGIC_VECTOR(7 DOWNTO 0));
+end component HOG_ram;
+
+component VGA_source_controller
+    Port( addrIn : in std_logic_vector(16 downto 0);
+          activeIn : in boolean;
+          activeOut : out boolean;
+          addrOut1 : out  std_logic_vector (16 downto 0) := (others => '0');
+          addrOut2 : out std_logic_vector (12 downto 0) := (others => '0');
+          outSel : out std_logic := '0';);
+end component VGA_source_controller;
+
 component multiplexer_RGB is
     Port ( clk : in STD_LOGIC;
            sw0 : in STD_LOGIC;	
@@ -153,13 +172,15 @@ component multiplexer_RGB is
 end component multiplexer_RGB;
 
 signal clk_VGA, pclk_cam : STD_LOGIC; 
-signal we : STD_LOGIC_VECTOR(0 DOWNTO 0);
-signal address_cam, address_VGA : STD_LOGIC_VECTOR (16 downto 0);
+signal we,wehog : STD_LOGIC_VECTOR(0 DOWNTO 0);
+signal address_cam, address_VGA, address_VGA_src : STD_LOGIC_VECTOR (16 downto 0);
+signal address_hog, address_VGA_hog : STD_LOGIC_VECTOR (12 downto 0);
 signal data_cam, data_VGA : STD_LOGIC_VECTOR (15 downto 0);
+signal data_hog, data_VGA_hog : STD_LOGIC_VECTOR (7 downto 0);
 signal coord_VGA, coord_cam : coordonnee;
-signal img_active : boolean;
+signal img_active,img_active_src : boolean;
 signal hs, vs : STD_LOGIC; 
-signal rst_VGA : STD_LOGIC; 
+signal rst_VGA, sel_data : STD_LOGIC; 
 --signal CAMERA_DATA : STD_LOGIC_VECTOR (7 downto 0);
 --signal CAMERA_HS, CAMERA_VS : STD_LOGIC;
 
@@ -225,6 +246,14 @@ vga: VGA_generator
                activeArea => img_active,
                reset => rst_VGA
                );
+source: VGA_source_controller
+    Port map (addrIn => address_VGA,
+              activeIn => img_active,
+              activeOut => img_active_src,
+              addrOut1 => address_VGA_src,
+              addrOut2 => address_VGA_hog
+              outSel => sel_data
+              );
 
 capture: Camera_Capture
    Port map ( pclk => CAMERA_PCLK,
@@ -246,6 +275,16 @@ ram: mem_ram
                clkb => clk_VGA,
                addrb => address_VGA,
                doutb => data_VGA
+               );
+
+hog: HOG_ram
+    Port map ( clka => clk,
+               wea => wehog,
+               addra => address_hog,
+               dina => data_hog,
+               clkb => clk_VGA,
+               addrb => address_VGA_hog,
+               doutb => data_VGA_hog
                );
    		  
 mux: multiplexer_RGB
