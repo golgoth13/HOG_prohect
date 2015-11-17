@@ -12,6 +12,7 @@ Histo::Histo(int width, int height, int image[])
         exit(1);
     }
     m_histo = new int[m_histo_width*m_histo_height];
+    m_histo_norme = new int[m_histo_width*m_histo_height];
 
     //m_img.affiche();
 
@@ -37,9 +38,6 @@ void Histo::affiche_ascii()
     for(j = 0; j < m_histo_height; j++) {
         for(i = 0; i < m_histo_width; i++) {
             switch(((m_histo[i+m_histo_width*j]+2)%16)/4) {
-                case 0:
-                    c = '|';
-                    break;
                 case 1:
                     c = '\\';
                     break;
@@ -49,6 +47,9 @@ void Histo::affiche_ascii()
                 case 3:
                     c = '/';
                     break;
+                default:
+                    c = '|';
+                    break;
             }
 
             cout << c << " ";
@@ -57,141 +58,38 @@ void Histo::affiche_ascii()
     }
 }
 
-void Histo::affiche_graphique()
+void Histo::affiche_graphique(string nom, int pattern[N_CLASSES][CELL_SIZE*CELL_SIZE])
 {
-    ofstream fichier_out("histo.pgm", ios::out);
+    ofstream fichier_out(("../res/"+nom+"_histo.pgm").c_str(), ios::out);
     if(!fichier_out) {
         cerr << "ça marche pas" << endl;
+        exit(1);
     }
 
     fichier_out << "P2" << endl << m_width << " " << m_height << endl << "255" << endl;
 
     int i, j;
-    string s;
     for(j = 0; j < m_histo_height; j++) {
         for(int occur = 0; occur < 4; occur++) {
             for(i = 0; i < m_histo_width; i++) {
-                switch(occur) {
-                    case 0:
-                        switch(((m_histo[i+m_histo_width*j]+2)%16)/4) {
-                            case 0:
-                                s = "0   255 255 0   ";
-                                break;
-                            case 1:
-                                s = "255 0   0   0   ";
-                                break;
-                            case 2:
-                                s = "0   0   0   0   ";
-                                break;
-                            case 3:
-                                s = "0   0   0   255 ";
-                                break;
-                        }
-                        break;
-                    case 1:
-                        switch(((m_histo[i+m_histo_width*j]+2)%16)/4) {
-                            case 0:
-                                s = "0   255 255 0   ";
-                                break;
-                            case 1:
-                                s = " 255 0   0  0   ";
-                                break;
-                            case 2:
-                                s = "255 255 255 255 ";
-                                break;
-                            case 3:
-                                s = "0   0   255 0   ";
-                                break;
-                        }
-                        break;
-                    case 2:
-                        switch(((m_histo[i+m_histo_width*j]+2)%16)/4) {
-                            case 0:
-                                s = "0   255 255 0   ";
-                                break;
-                            case 1:
-                                s = "0   0   255 0   ";
-                                break;
-                            case 2:
-                                s = "255 255 255 255 ";
-                                break;
-                            case 3:
-                                s = "0   255 0   0   ";
-                                break;
-                        }
-                        break;
-                    case 3:
-                        switch(((m_histo[i+m_histo_width*j]+2)%16)/4) {
-                            case 0:
-                                s = "0   255 255 0   ";
-                                break;
-                            case 1:
-                                s = "0   0   0   255 ";
-                                break;
-                            case 2:
-                                s = "0   0   0   0   ";
-                                break;
-                            case 3:
-                                s = "255 0   0   0   ";
-                                break;
-                        }
-                        break;
-                }
+                //int val = log(m_histo_norme[i+m_histo_width*j])/log(2);
+                int val = m_histo_norme[i+m_histo_width*j];
+                if (val > 1024)
+                    val = 1024;
 
+                int classe = m_histo[i+m_histo_width*j];
+                //classe = (classe + 8)%16;
 
-                fichier_out << s;
+                fichier_out << val*pattern[classe][0+occur*CELL_SIZE]/1024 << " ";
+                fichier_out << val*pattern[classe][1+occur*CELL_SIZE]/1024 << " ";
+                fichier_out << val*pattern[classe][2+occur*CELL_SIZE]/1024 << " ";
+                fichier_out << val*pattern[classe][3+occur*CELL_SIZE]/1024 << " ";
             }
             fichier_out << endl;
         }
     }
     fichier_out.close();
 }
-
-/*void Histo::gradient_h(unsigned char grad[], unsigned char image[])
-{
-    int i, j;
-    for(j = 0; j < m_height; j++) {
-        for(i = 0; i < m_width; i++) {
-            if(i!=0 && i!=m_width-1 && j!=0 && j!=m_height-1) { // Si on n'est pas au bord de l'image
-                grad[i+m_width*j] = image[i+m_width*j+1] - image[i+m_width*j-1];
-            } else {
-                grad[i+m_width*j] = 0;
-            }
-        }
-    }
-}*/
-
-/*void Histo::gradient_v(unsigned char grad[], unsigned char image[])
-{
-    int i, j;
-    for(j = 0; j < m_height; j++) {
-        for(i = 0; i < m_width; i++) {
-            if(i!=0 && i!=m_width-1 && j!=0 && j!=m_height-1) { // Si on n'est pas au bord de l'image
-                grad[i+m_width*j] = image[i+m_width*(j+1)] - image[i+m_width*(j-1)];
-            } else {
-                grad[i+m_width*j] = 0;
-            }
-        }
-    }
-}*/
-
-/*void Histo::gradient_cell(unsigned char grad_h[], unsigned char grad_v[], unsigned char image[], int x_cell, int y_cell)
-{
-    int i, j, x, y;
-    for(j = 0; j < CELL_SIZE; j++) {
-        for(i = 0; i < CELL_SIZE; i++) {
-            x = x_cell*CELL_SIZE+i;
-            y = y_cell*CELL_SIZE+j;
-            if(x!=0 && x!=m_width-1 && y!=0 && y!=m_height-1) { // Si on n'est pas au bord de l'image
-                grad_h[i+CELL_SIZE*j] = image[(x+1)+m_width*y] - image[(x-1)+m_width*y];
-                grad_v[i+CELL_SIZE*j] = image[x+m_width*(y+1)] - image[x+m_width*(y-1)];
-            } else {
-                grad_h[i+CELL_SIZE*j] = 0;
-                grad_v[i+CELL_SIZE*j] = 0;
-            }
-        }
-    }
-}*/
 
 void Histo::gradient_pixel(int* grad_h, int* grad_v, int image[], int x, int y)
 {
@@ -204,42 +102,10 @@ void Histo::gradient_pixel(int* grad_h, int* grad_v, int image[], int x, int y)
     }
 }
 
-/*void Histo::calcul_norme(unsigned char grad_h[], unsigned char grad_v[], float norme[])
-{
-    int i, j, x, y;
-    for(j = 0; j < m_height; j++) {
-        for(i = 0; i < m_width; i++) {
-            x = grad_h[i+m_width*j];
-            y = grad_v[i+m_width*j];
-            norme[i+m_width*j] = sqrt(x*x+y*y);
-        }
-    }
-}*/
-
 void Histo::calcul_norme_pixel(float* norme, int x, int y)
 {
     *norme = sqrt(x*x+y*y);
 }
-
-/*void Histo::calcul_arg(unsigned char grad_h[], unsigned char grad_v[], float arg[])
-{
-    int i, j, x, y;
-    for(j = 0; j < m_height; j++) {
-        for(i = 0; i < m_width; i++) {
-            x = grad_h[i+m_width*j];
-            y = grad_v[i+m_width*j];
-            if(x == 0) { // Evite la division par 0
-                if (y == 0) {
-                    arg[i+m_width*j] = 0;
-                } else {
-                    arg[i+m_width*j] = M_PI/2;
-                }
-            } else {
-                arg[i+m_width*j] = atan(y/x);
-            }
-        }
-    }
-}*/
 
 void Histo::calcul_arg_pixel(float* arg, int x, int y)
 {
@@ -253,52 +119,6 @@ void Histo::calcul_arg_pixel(float* arg, int x, int y)
         *arg = atan(y/x);
     }
 }
-
-/*void Histo::calcul_histo()
-{
-    int i, j, k, m, n, classe, val, indice;
-    unsigned char grad_h[m_width*m_height];
-    unsigned char grad_v[m_width*m_height];
-
-    float norme[m_width*m_height];
-    float arg[m_width*m_height];
-    float cell[N_CLASSES];
-
-    gradient_h(grad_h, m_img.getImage());
-    gradient_v(grad_v, m_img.getImage());
-
-    calcul_norme(grad_h, grad_v, norme);
-    calcul_arg(grad_h, grad_v, arg);
-
-    for(j = 0; j < m_histo_height; j++) {
-        for(i = 0; i < m_histo_width; i++) {
-            // Init cell
-            for(k = 0; k < N_CLASSES; k++) {
-                cell[k] = 0;
-            }
-            classe = 9; // Direction horizontale
-            val = 0;
-
-            // Vote
-            for(n = 0; n < CELL_SIZE; n++) {
-                for(m = 0; m < CELL_SIZE; m++) {
-                    indice = i*CELL_SIZE+m + m_width*(j*CELL_SIZE+n);
-                    k = (arg[indice]+M_PI/2)*16/M_PI;
-                    cell[k] += norme[indice];
-                }
-            }
-
-            // Resultat du vote
-            for(k = 0; k < N_CLASSES; k++) {
-                if (cell[k] > val) {
-                    val = cell[k];
-                    classe = k;
-                }
-            }
-            m_histo[i+m_histo_width*j] = classe;
-        }
-    }
-}*/
 
 void Histo::calcul_histo_no_ram()
 {
@@ -317,7 +137,7 @@ void Histo::calcul_histo_no_ram()
             for(k = 0; k < N_CLASSES; k++) {
                 cell[k] = 0;
             }
-            classe = 9; // Direction horizontale
+            classe = 0; // Gradient horizontal
             val = 0;
 
             // Parcours des pixels de la cellule
@@ -350,6 +170,7 @@ void Histo::calcul_histo_no_ram()
                 }
             }
             m_histo[i+m_histo_width*j] = classe;
+            m_histo_norme[i+m_histo_width*j] = val;
         }
     }
 }
