@@ -20,8 +20,8 @@ public:
     Histo(int width, int height, int* image); // La taille de l'image
 
     //Affichage
-    void affiche();
-    void affiche_ascii();
+    void affiche(); // Supprimer cette fonction pour la synthèse
+    void affiche_ascii(); // Supprimer cette fonction pour la synthèse
     void affiche_graphique(std::string nom, int pattern[N_CLASSES][CELL_SIZE*CELL_SIZE]);
 
 private:

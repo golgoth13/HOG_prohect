@@ -2,6 +2,7 @@
 #include <fstream>
 #include "Image.h"
 #include "Histo.h"
+#include "Affine.h"
 
 using namespace std;
 
@@ -65,8 +66,35 @@ int main()
         cout << endl;
     }*/
 
-    Histo histo(large,haut,tab);
+    Affine calcul;
+    //calcul.writeRacine();
+    //calcul.writeArctangeante();
+
+    int borne = 50;
+    for (int j = borne; j >= -1*borne; j--) {
+        for (i = -1*borne; i <= borne; i++) {
+            if (i != 0) {
+                int val = calcul.arctangeante(j, i);
+                if (val >= 0)
+                    cout << " ";
+                cout << val << " ";
+            }
+        }
+        cout << endl;
+    }
+
+    /*for (int j = -20; j <0; j++)
+        cout << calcul.arctangeante(1,j) << " ";
+    for (int j = 1; j <=20; j++)
+        cout << calcul.arctangeante(1,j) << " ";
+    cout << endl;
+    for (int j = -20; j <0; j++)
+        cout << atan(1/(double)j) << " ";
+    for (int j = 1; j <=20; j++)
+        cout << atan(1/(double)j) << " ";*/
+
+    //Histo histo(large,haut,tab);
     //histo.affiche();
     //histo.affiche_ascii();
-    histo.affiche_graphique(nom_fichier, pattern);
+    //histo.affiche_graphique(nom_fichier, pattern);
 }

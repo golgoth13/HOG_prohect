@@ -31,6 +31,7 @@ void Histo::affiche()
     }
 }
 
+// Supprimer cette fonction pour la synthèse
 void Histo::affiche_ascii()
 {
     int i, j;
@@ -68,7 +69,7 @@ void Histo::affiche_graphique(string nom, int pattern[N_CLASSES][CELL_SIZE*CELL_
 
     fichier_out << "P2" << endl << m_width << " " << m_height << endl << "255" << endl;
 
-    int i, j;
+    int i, j, k;
     for(j = 0; j < m_histo_height; j++) {
         for(int occur = 0; occur < 4; occur++) {
             for(i = 0; i < m_histo_width; i++) {
@@ -80,10 +81,9 @@ void Histo::affiche_graphique(string nom, int pattern[N_CLASSES][CELL_SIZE*CELL_
                 int classe = m_histo[i+m_histo_width*j];
                 //classe = (classe + 8)%16;
 
-                fichier_out << val*pattern[classe][0+occur*CELL_SIZE]/1024 << " ";
-                fichier_out << val*pattern[classe][1+occur*CELL_SIZE]/1024 << " ";
-                fichier_out << val*pattern[classe][2+occur*CELL_SIZE]/1024 << " ";
-                fichier_out << val*pattern[classe][3+occur*CELL_SIZE]/1024 << " ";
+                for(k = 0; k < CELL_SIZE; k++) {
+                    fichier_out << val*pattern[classe][k+occur*CELL_SIZE]/1024 << " ";
+                }
             }
             fichier_out << endl;
         }
