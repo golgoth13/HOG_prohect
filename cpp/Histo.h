@@ -7,10 +7,9 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include "HOG_Parameters.h"
 #include "Image.h"
-
-#define CELL_SIZE 4
-#define N_CLASSES 16
+#include "Affine.h"
 
 class Histo
 {
@@ -33,15 +32,22 @@ private:
     int m_histo_width;
     int m_histo_height;
     Image m_img;
+    Affine m_calcul;
 
     //Calcul des gradients
     void gradient_pixel(int* grad_h, int* grad_v, int image[], int x, int y); // Calcule les gradients du pixel et les stocke dans grad_h et grad_v
 
     // Calcule la norme à partir de grad_h et grad_v et la stocke dans norme
-    void calcul_norme_pixel(float* norme, int x, int y);
+    //void calcul_norme_pixel(float* norme, int x, int y);
 
     // Calcule l'argument à partir de grad_h et grad_v et le stocke dans arg
-    void calcul_arg_pixel(float* arg, int x, int y);
+    //void calcul_arg_pixel(float* arg, int x, int y);
+
+    // Calcule la norme à partir de grad_h et grad_v et la stocke dans norme
+    void calcul_norme_pixel(int* norme, int x, int y);
+
+    // Calcule l'argument à partir de grad_h et grad_v et le stocke dans arg
+    void calcul_arg_pixel(int* arg, int x, int y);
 
     // Calcule l'histogramme
     void calcul_histo_no_ram();

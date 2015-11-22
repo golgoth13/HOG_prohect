@@ -95,14 +95,14 @@ void Histo::gradient_pixel(int* grad_h, int* grad_v, int image[], int x, int y)
 {
     if(x!=0 && x!=m_width-1 && y!=0 && y!=m_height-1) { // Si on n'est pas au bord de l'image
         *grad_h = image[(x+1)+m_width*y] - image[(x-1)+m_width*y];
-        *grad_v = image[x+m_width*(y+1)] - image[x+m_width*(y-1)];
+        *grad_v = - image[x+m_width*(y+1)] + image[x+m_width*(y-1)];
     } else {
         *grad_h = 0;
         *grad_v = 0;
     }
 }
 
-void Histo::calcul_norme_pixel(float* norme, int x, int y)
+/*void Histo::calcul_norme_pixel(float* norme, int x, int y)
 {
     *norme = sqrt(x*x+y*y);
 }
@@ -118,6 +118,24 @@ void Histo::calcul_arg_pixel(float* arg, int x, int y)
     } else {
         *arg = atan(y/x);
     }
+}*/
+
+void Histo::calcul_norme_pixel(int* norme, int x, int y)
+{
+    *norme = m_calcul.racine2(x*x+y*y);
+}
+
+void Histo::calcul_arg_pixel(int* arg, int x, int y)
+{
+    if(x == 0) { // Evite la division par 0
+        if (y == 0) {
+            *arg = 0;
+        } else {
+            *arg = M_PI/2;
+        }
+    } else {
+        *arg = m_calcul.arctangeante2(y, x);
+    }
 }
 
 void Histo::calcul_histo_no_ram()
@@ -126,9 +144,13 @@ void Histo::calcul_histo_no_ram()
     int grad_h;
     int grad_v;
 
-    float norme;
+    /*float norme;
     float arg;
-    float cell[N_CLASSES];
+    float cell[N_CLASSES];*/
+
+    int norme;
+    int arg;
+    int cell[N_CLASSES];
 
     // Parcours des cellules
     for(j = 0; j < m_histo_height; j++) {
@@ -154,11 +176,12 @@ void Histo::calcul_histo_no_ram()
                     calcul_arg_pixel(&arg, grad_h, grad_v);
 
                     // Vote
-                    if (arg < 0) {
+                    /*if (arg < 0) {
                         arg += M_PI;
                     }
                     k = arg*16/M_PI;
-                    cell[k] += norme;
+                    cell[k] += norme;*/
+                    cell[arg] += norme;
                 }
             }
 
