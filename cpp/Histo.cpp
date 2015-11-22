@@ -67,11 +67,16 @@ void Histo::affiche_graphique(string nom, int pattern[N_CLASSES][CELL_SIZE*CELL_
         exit(1);
     }
 
-    fichier_out << "P2" << endl << m_width << " " << m_height << endl << "255" << endl;
+    fichier_out << "P2" << endl << m_width * 2 << " " << m_height << endl << "255" << endl;
 
     int i, j, k;
     for(j = 0; j < m_histo_height; j++) {
         for(int occur = 0; occur < 4; occur++) {
+            for(i = 0; i < m_histo_width; i++) {
+                for(k = 0; k < CELL_SIZE; k++) {
+                    fichier_out << (m_img.getImage())[i*CELL_SIZE+k + (j*CELL_SIZE+occur)*m_width] << " ";
+                }
+            }
             for(i = 0; i < m_histo_width; i++) {
                 //int val = log(m_histo_norme[i+m_histo_width*j])/log(2);
                 int val = m_histo_norme[i+m_histo_width*j];
