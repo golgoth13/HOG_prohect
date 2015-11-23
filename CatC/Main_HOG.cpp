@@ -26,17 +26,26 @@
 void Main_HOG (ac_int<17> *mem_Ram_Addr, 
 	       ac_int<8>  mem_Ram_Data,
 	       ac_int<13> *mem_Hog_Addr,
-	       ac_int<16> *mem_Hog_Data){
+	       ac_int<16> *mem_Hog_Data,
+	       bool       *mem_Hog_WE){
 
   int i,j;
-  //mem_Ram_Init(10);
+  ac_int<1> ok;
+  mem_Ram_Init(10,&ok);
   ac_int<8> *grad_hor;
-  top_loop_x: for (j=1;j<HEIGHT_IMAGE-1;j++){
-      top_loop_y: for (i=1;i<WIDTH_IMAGE-1;i++){
+ top_loop_x : for (j=1;j<HEIGHT_IMAGE-1;j++){
+  top_loop_y : for (i=1;i<WIDTH_IMAGE-1;i++){
       gradient_hor(i,j,grad_hor);
       *mem_Hog_Data = *grad_hor;
+      *mem_Hog_WE = 1;
       
     }
+    *mem_Hog_WE = 0;
   }
   
 }
+
+//void mem_Hog_Write(ac_int<16> addr,ac_int<8> data){
+  
+
+//}

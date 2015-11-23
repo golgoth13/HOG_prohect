@@ -22,5 +22,6 @@
 void Main_HOG (ac_int<17> *mem_Ram_Addr, 
 	       ac_int<8>  mem_Ram_Data,
 	       ac_int<13> *mem_Hog_Addr,
-	       ac_int<16> *mem_Hog_Data
+	       ac_int<16> *mem_Hog_Data,
+	       bool       *mem_Hog_WE
 	       );
