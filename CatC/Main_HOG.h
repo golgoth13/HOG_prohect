@@ -17,4 +17,10 @@
 // Additional Comments: 
 //
 ////////////////////////////////////////////////////////////////////////////////
-int main (void);
+#include "ac_int.h"
+
+void Main_HOG (ac_int<17> *mem_Ram_Addr, 
+	       ac_int<8>  mem_Ram_Data,
+	       ac_int<13> *mem_Hog_Addr,
+	       ac_int<16> *mem_Hog_Data
+	       );

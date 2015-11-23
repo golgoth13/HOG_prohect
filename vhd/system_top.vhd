@@ -103,7 +103,7 @@ end component clk_pll;
 
 component VGA_generator
     Port ( clk : in STD_LOGIC;
-           btn3 : in STD_LOGIC;								
+           btn3 : in STD_LOGIC;						       	
            Hsync : out STD_LOGIC;
            Vsync : out STD_LOGIC;
            addr : out STD_LOGIC_VECTOR (16 downto 0);
@@ -152,6 +152,13 @@ component VGA_source_controller
           addrOut2 : out std_logic_vector (12 downto 0) := (others => '0');
           outSel : out std_logic := '0';);
 end component VGA_source_controller;
+
+component MUX_VGA
+  Port(  dataIn1 : IN std_logic_vector(7 downto 0); 
+         dataIn2 : IN std_logic_vector(7 downto 0); 
+         Sel     : IN std_logic;
+         dataOut : OUT std_logic_vector(7 downto 0););
+end component MUX_VGA
 
 component multiplexer_RGB is
     Port ( clk : in STD_LOGIC;
@@ -253,6 +260,12 @@ source: VGA_source_controller
               addrOut1 => address_VGA_src,
               addrOut2 => address_VGA_hog
               outSel => sel_data
+              );
+muxvga: MUX_VGA
+    Port map (dataIn1 => address_VGA,
+              dataIn2 => data_VGA_hog,
+              dataOut => data_VGA,
+              Sel => sel_data
               );
 
 capture: Camera_Capture

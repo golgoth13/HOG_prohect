@@ -19,5 +19,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef _MEM_RAM_H
 #define _MEM_RAM_H
+#define WIDTH_IMAGE 40
+#define HEIGHT_IMAGE 20
+#include "ac_int.h"
+
+    // Initialise toutes les cases 
+    void mem_Ram_Init(int v);
+
+    void mem_Ram_Read(ac_int<17> addr, ac_int<8> *data);
+
+    void mem_Ram_Write(ac_int<17> addr, ac_int<8> value);
 
 #endif

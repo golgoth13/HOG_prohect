@@ -19,4 +19,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "Mem_Ram.h"
 
-void gradient_h(void);
+void gradient_hor(ac_int<9> coord_x,
+		  ac_int<8> coord_y,
+		  ac_int<8> *gradient);

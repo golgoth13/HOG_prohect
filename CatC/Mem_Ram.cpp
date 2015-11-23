@@ -17,3 +17,27 @@
 // Additional Comments: 
 //
 ////////////////////////////////////////////////////////////////////////////////
+#include "Mem_Ram.h"
+#include "stdio.h"
+#include "ac_int.h"
+
+static ac_int<8> m_image[WIDTH_IMAGE*HEIGHT_IMAGE];
+
+void _mem_Ram_Init(int v) {
+  int i,j;
+  Ram_X:for(j = 0; j < HEIGHT_IMAGE; j++) {
+    Ram_Y:for(i = 0; i < WIDTH_IMAGE; i++) {
+      m_image[i+WIDTH_IMAGE*j] = i+v;
+    }
+  }
+}
+ 
+
+void mem_Ram_Read(ac_int<17> addr, ac_int<8> *data){
+  *data = m_image[addr];
+}
+
+void mem_Ram_Write(ac_int<17> addr, ac_int<8> value){
+  m_image[addr] = value;
+
+}
