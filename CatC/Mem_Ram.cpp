@@ -23,15 +23,15 @@
 
 static ac_int<8> m_image[WIDTH_IMAGE*HEIGHT_IMAGE];
 
-void _mem_Ram_Init(ac_int<8> v,ac_int<1> *ok) {
+void mem_Ram_Init(ac_int<8> v,ac_int<1> *ok) {
   int i;
   int j;
- Ram_X : for(j = 0; j < HEIGHT_IMAGE; j++) {
-  Ram_Y : for(i = 0; i < WIDTH_IMAGE; i++) {
-      m_image[i+WIDTH_IMAGE*j] = i+(int)v;
+ Ram_X : for(j = 0; j < HEIGHT_IMAGE-1; j++) {
+  Ram_Y : for(i = 0; i < WIDTH_IMAGE-1; i++) {
+      m_image[i+WIDTH_IMAGE*j] = j+(int)v;
     }
   }
-  ok = (ac_int<1>)1;
+  *ok = 1;
 }
  
 

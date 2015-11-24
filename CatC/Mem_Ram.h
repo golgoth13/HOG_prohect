@@ -18,8 +18,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#define WIDTH_IMAGE 40
-#define HEIGHT_IMAGE 20
+#define WIDTH_IMAGE 320
+#define HEIGHT_IMAGE 240
 #include "ac_int.h"
 
 // Initialise toutes les cases 
