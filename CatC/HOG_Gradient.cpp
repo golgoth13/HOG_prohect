@@ -20,54 +20,49 @@
 #include "Mem_Ram.h"
 #include "HOG_Gradient.h"
 
-void gradient_hor(ac_int<9> coord_x,
-		  ac_int<8> coord_y,
-		  ac_int<8> *gradient_h){
-
-	int i, j;
-	ac_int<8> *val_b, *val_a;
-	ac_int<17> mem_Ram_addr;
- Grad_hor_y : for( j = coord_y-1; j <= coord_y+1; j++) {
-	Grad_hor_x : for(i = coord_x-1; i <= coord_x+1; i++) {
-			if(i > 0 && 
-			   i < WIDTH_IMAGE-1 && 
-			   j > 0 && 
-			   j < HEIGHT_IMAGE-1) {
-				mem_Ram_addr = (j+1)*WIDTH_IMAGE + i;
-				mem_Ram_Read(mem_Ram_addr,val_b);
-				mem_Ram_addr = (j-1)*WIDTH_IMAGE +i;
-				mem_Ram_Read(mem_Ram_addr,val_a);
-				*gradient_h = *val_b  - *val_a ;
-			} else {
-				*gradient_h = 0;
-			}
-		}
-	}
-}
-
 void gradient_ver(ac_int<9> coord_x,
 		  ac_int<8> coord_y,
 		  ac_int<8> *gradient_v){
 
-	int i, j;
-	ac_int<8> *val_b, *val_a;
-	ac_int<17> mem_Ram_addr;
-Grad_hor_x : for( j = coord_y-1; j < coord_y+1; j++) {
-	Grad_hor_y : for(i = coord_x-1; i < coord_x+1; i++) {
-			if(i > 0 && 
-			   i < WIDTH_IMAGE-1 && 
-			   j > 0 && 
-			   j < HEIGHT_IMAGE-1) {
-				mem_Ram_addr = (j)*WIDTH_IMAGE + i+1;
-				mem_Ram_Read(mem_Ram_addr,val_b);
-				mem_Ram_addr = (j)*WIDTH_IMAGE + i-1;
-				mem_Ram_Read(mem_Ram_addr,val_a);
-				*gradient_v = *val_b - *val_a;
-			} else {
-				*gradient_v = 0;
-			}
-		}
-	}
+  ac_int<8> val_b, val_a;
+  ac_int<17> mem_Ram_addr;
+ 
+  if(coord_x > 0 && 
+     coord_x < (WIDTH_IMAGE-1) && 
+     coord_y > 0 && 
+     coord_y < HEIGHT_IMAGE-1) {
+        mem_Ram_addr = (coord_y+1)*WIDTH_IMAGE + coord_x;
+        mem_Ram_Read(mem_Ram_addr,&val_b);
+        mem_Ram_addr = (coord_y-1)*WIDTH_IMAGE + coord_x;
+        mem_Ram_Read(mem_Ram_addr,&val_a);
+        *gradient_v = val_a  - val_b ;
+  } else {
+    *gradient_v = 0;
+  }
+		
+	
+}
+
+void gradient_hor(ac_int<9> coord_x,
+		  ac_int<8> coord_y,
+		  ac_int<8> *gradient_h){
+
+  ac_int<8> val_b, val_a;
+  ac_int<17> mem_Ram_addr;
+
+  if(coord_x > 0 && 
+     coord_x < WIDTH_IMAGE-1 && 
+     coord_y > 0 && 
+     coord_y < HEIGHT_IMAGE-1) {
+        mem_Ram_addr = (coord_y)*WIDTH_IMAGE + coord_x+1;
+        mem_Ram_Read(mem_Ram_addr,&val_b);
+        mem_Ram_addr = (coord_y)*WIDTH_IMAGE + coord_x-1;
+        mem_Ram_Read(mem_Ram_addr,&val_a);
+        *gradient_h = val_b - val_a;
+  } else {
+    *gradient_h = 0;
+  }
+
 }
 
 void gradient_pixel(ac_int<9> coord_x,
