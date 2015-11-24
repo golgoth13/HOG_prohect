@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    string nom_fichier = "test";
+    string nom_fichier = "empire";
 
     int large, haut;
     string magic_number;
@@ -22,16 +22,78 @@ int main()
     if(!fichier) {
         cerr << "ça marche pas" << endl;
     }
-
     fichier >> magic_number >> large >> haut >> useless;
+
+
+    /*int min = 255;
+    int max = 0;
+    while(!fichier.eof()) {
+        fichier >> useless;
+        if (useless < min)
+            min = useless;
+        if (useless > max)
+            max = useless;
+    }
+    fichier.close();
+    ifstream fichier_in(("../img/"+nom_fichier+".pgm").c_str(), ios::in);
+    if(!fichier_in) {
+        cerr << "ça marche pas" << endl;
+    }
+
+    fichier_in >> magic_number >> large >> haut >> useless;
+
+    ofstream fichier_out(("../img/"+nom_fichier+"_P2.pgm").c_str(), ios::out);
+    if(!fichier_out) {
+        cerr << "ça marche pas" << endl;
+        exit(1);
+    }
+    fichier_out << "P2" << endl << large << " " << haut << endl << "255" << endl;
+    while(!fichier_in.eof()) {
+        fichier_in >> useless;
+        fichier_out << (useless - min) * 255 / (max-min) << " ";
+    }
+    exit(0);
+
+    if (magic_number == "P5") {
+            cout << "ici" << endl;
+        fichier.close();
+        ifstream fichier_in(("../img/"+nom_fichier+".pgm").c_str(), ios::in | ios::binary);
+        if(!fichier) {
+            cerr << "ça marche pas" << endl;
+        }
+        ofstream fichier_out(("../img/"+nom_fichier+"_P2.pgm").c_str(), ios::out);
+        if(!fichier_out) {
+            cerr << "ça marche pas" << endl;
+            exit(1);
+        }
+        fichier_in >> magic_number >> useless >> useless >> useless;
+        fichier_out << "P2" << endl << large << " " << haut << endl << "255" << endl;
+        i = 0;
+        while(!fichier_in.eof()) {
+            fichier_in.read((char *)&useless, 1);
+            fichier_out << useless << " ";
+            i++;
+        }
+        fichier_in.close();
+        fichier_out.close();
+        exit(1);
+    }*/
+
+    /*ofstream fichier_out(("../img/"+nom_fichier+"_addr_map.txt").c_str(), ios::out);
+    if(!fichier_out) {
+        cerr << "ça marche pas" << endl;
+        exit(1);
+    }*/
 
     i = 0;
     int tab[large*haut];
     while(!fichier.eof()) {
         fichier >> tab[i];
+        //fichier_out << dec << tab[i] << "\t => " << hex << "X\"" << i << "\"," << endl;
         i++;
     }
     fichier.close();
+    //fichier_out.close();
 
     // Lecture patterns histogramme
     for(int k = 0; k < N_CLASSES; k++) {
