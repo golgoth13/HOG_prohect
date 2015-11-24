@@ -19,8 +19,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "ac_int.h"
 
-void norme_pixel(ac_int<8> *norme,
-		 ac_int<16> grad);
+void norme_pixel(ac_int<8,false> *norme,
+		 ac_int<16,false> grad);
 
-void arg_pixel(ac_int<4> *arg, 
-	       ac_int<16> grad);
+void arg_pixel(ac_int<4,false> *arg, 
+	       ac_int<16,false> grad);

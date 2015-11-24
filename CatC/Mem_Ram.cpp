@@ -21,25 +21,25 @@
 #include "stdio.h"
 #include "ac_int.h"
 
-static ac_int<8> m_image[WIDTH_IMAGE*HEIGHT_IMAGE];
+static ac_int<8,false> m_image[WIDTH_IMAGE*HEIGHT_IMAGE];
 
-void mem_Ram_Init(ac_int<8> v,ac_int<1> *ok) {
-  int i;
-  int j;
+void mem_Ram_Init(ac_int<8,false> v,ac_int<1,false> *ok) {
+  unsigned int i;
+  unsigned int j;
  Ram_X : for(j = 0; j < HEIGHT_IMAGE-1; j++) {
   Ram_Y : for(i = 0; i < WIDTH_IMAGE-1; i++) {
-      m_image[i+WIDTH_IMAGE*j] = j+(int)v;
+      m_image[i+WIDTH_IMAGE*j] = j+(unsigned int)v;
     }
   }
   *ok = 1;
 }
  
 
-void mem_Ram_Read(ac_int<17> addr, ac_int<8> *data){
+void mem_Ram_Read(ac_int<17,false> addr, ac_int<8,false> *data){
   *data = m_image[addr];
 }
 
-void mem_Ram_Write(ac_int<17> addr, ac_int<8> value){
+void mem_Ram_Write(ac_int<17,false> addr, ac_int<8,false> value){
   m_image[addr] = value;
 
 }
