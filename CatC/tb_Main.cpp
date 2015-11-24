@@ -1,4 +1,5 @@
 #include "Main_HOG.h"
+#include "Mem_Ram.h"
 #include <stdio.h>
 
 #include <mc_scverify.h>

@@ -27,19 +27,19 @@ void gradient_hor(ac_int<9> coord_x,
 	int i, j;
 	ac_int<8> *val_b, *val_a;
 	ac_int<17> mem_Ram_addr;
-Grad_hor_x : for( j = coord_y-1; j < coord_y+1; j++) {
-	Grad_hor_y : for(i = coord_x-1; i < coord_x+1; i++) {
+ Grad_hor_y : for( j = coord_y-1; j <= coord_y+1; j++) {
+	Grad_hor_x : for(i = coord_x-1; i <= coord_x+1; i++) {
 			if(i > 0 && 
 			   i < WIDTH_IMAGE-1 && 
 			   j > 0 && 
 			   j < HEIGHT_IMAGE-1) {
-				mem_Ram_addr = (j+1)<<9 + i;
+				mem_Ram_addr = (j+1)*WIDTH_IMAGE + i;
 				mem_Ram_Read(mem_Ram_addr,val_b);
-				mem_Ram_addr = (j-1)<<9 +i;
+				mem_Ram_addr = (j-1)*WIDTH_IMAGE +i;
 				mem_Ram_Read(mem_Ram_addr,val_a);
-				*gradient = *val_b - *val_a;
+				*gradient_h = *val_b  - *val_a ;
 			} else {
-				*gradient = 0;
+				*gradient_h = 0;
 			}
 		}
 	}
@@ -58,13 +58,13 @@ Grad_hor_x : for( j = coord_y-1; j < coord_y+1; j++) {
 			   i < WIDTH_IMAGE-1 && 
 			   j > 0 && 
 			   j < HEIGHT_IMAGE-1) {
-				mem_Ram_addr = (j)<<9 + i+1;
+				mem_Ram_addr = (j)*WIDTH_IMAGE + i+1;
 				mem_Ram_Read(mem_Ram_addr,val_b);
-				mem_Ram_addr = (j)<<9 + i-1;
+				mem_Ram_addr = (j)*WIDTH_IMAGE + i-1;
 				mem_Ram_Read(mem_Ram_addr,val_a);
-				*gradient = *val_b - *val_a;
+				*gradient_v = *val_b - *val_a;
 			} else {
-				*gradient = 0;
+				*gradient_v = 0;
 			}
 		}
 	}
@@ -77,7 +77,7 @@ void gradient_pixel(ac_int<9> coord_x,
 	
 	ac_int<8> gradient_h, gradient_v;
 	gradient_hor(coord_x, coord_y, &gradient_h);
-	gradient_hor(coord_x, coord_y, &gradient_v);
+	gradient_ver(coord_x, coord_y, &gradient_v);
 	*gradient_p = (gradient_h<<8) | gradient_v;
 
 }

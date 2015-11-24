@@ -29,13 +29,15 @@ void Main_HOG (ac_int<17> *mem_Ram_Addr,
 	       ac_int<16> *mem_Hog_Data,
 	       bool       *mem_Hog_WE){
 
-  int i,j;
+  ac_int<9> x;
+  ac_int<8> y;
   ac_int<1> ok;
-  mem_Ram_Init(10,&ok);
+  ac_int<8> dafuk = 10 ;
+  mem_Ram_Init(dafuk,&ok);
   ac_int<8> *grad_hor;
- top_loop_x : for (j=1;j<HEIGHT_IMAGE-1;j++){
-  top_loop_y : for (i=1;i<WIDTH_IMAGE-1;i++){
-      gradient_hor(i,j,grad_hor);
+ top_loop_y : for (y=1;y<HEIGHT_IMAGE-2;y++){
+  top_loop_x : for (x=1;y<WIDTH_IMAGE-2;x++){
+      gradient_hor(x,y,grad_hor);
       *mem_Hog_Data = *grad_hor;
       *mem_Hog_WE = 1;
       
