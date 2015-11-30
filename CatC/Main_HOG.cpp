@@ -36,9 +36,8 @@ void Main_HOG (ac_int<17,false> *mem_Ram_Addr,
 
   ac_int<9,false> x;
   ac_int<8,false> y;
-  ac_int<1,false> ok;
-  ac_int<8,false> dafuk = 10 ;
-  mem_Ram_Init(dafuk,&ok);
+  ac_int<8,false> tmp_value = 10 ;
+  mem_Ram_Init(tmp_value);
   ac_int<8,true> *grad_hor;
  top_loop_y : for (y=1;y<=HEIGHT_IMAGE-2;y++){
   top_loop_x : for (x=1;x<=WIDTH_IMAGE-2;x++){

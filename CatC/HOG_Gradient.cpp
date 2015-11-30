@@ -82,6 +82,7 @@ void gradient_pixel(ac_int<9,false> coord_x,
 	ac_int<8,true> gradient_h, gradient_v;
 	gradient_hor(coord_x, coord_y, &gradient_h);
 	gradient_ver(coord_x, coord_y, &gradient_v);
-	*gradient_p = (gradient_h<<8) | gradient_v;
+	*gradient_p =  gradient_h;
+	*gradient_p = (*gradient_p<<8) | gradient_v;
 
 }

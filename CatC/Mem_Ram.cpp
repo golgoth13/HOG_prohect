@@ -23,7 +23,7 @@
 
 static ac_int<8,false> m_image[WIDTH_IMAGE*HEIGHT_IMAGE];
 
-void mem_Ram_Init(ac_int<8,false> v,ac_int<1,false> *ok) {
+void mem_Ram_Init(ac_int<8,false> v) {
   unsigned int i;
   unsigned int j;
  Ram_X : for(j = 0; j < HEIGHT_IMAGE-1; j++) {
@@ -31,7 +31,6 @@ void mem_Ram_Init(ac_int<8,false> v,ac_int<1,false> *ok) {
       m_image[i+WIDTH_IMAGE*j] = j+(unsigned int)v;
     }
   }
-  *ok = 1;
 }
  
 

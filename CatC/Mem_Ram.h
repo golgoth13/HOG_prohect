@@ -23,7 +23,7 @@
 #include "ac_int.h"
 
 // Initialise toutes les cases 
-void mem_Ram_Init(ac_int<8,false> v,ac_int<1,false> *ok);
+void mem_Ram_Init(ac_int<8,false> v);
 
 void mem_Ram_Read(ac_int<17,false> addr, ac_int<8,false> *data);
 
