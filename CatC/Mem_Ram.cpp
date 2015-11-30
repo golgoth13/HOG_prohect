@@ -26,9 +26,15 @@ static ac_int<8,false> m_image[WIDTH_IMAGE*HEIGHT_IMAGE];
 void mem_Ram_Init(ac_int<8,false> v) {
   unsigned int i;
   unsigned int j;
+  unsigned int cpt =0;
  Ram_X : for(j = 0; j < HEIGHT_IMAGE-1; j++) {
   Ram_Y : for(i = 0; i < WIDTH_IMAGE-1; i++) {
-      m_image[i+WIDTH_IMAGE*j] = j+(unsigned int)v;
+      m_image[i+WIDTH_IMAGE*j] = cpt;
+      if (cpt <233) {
+	cpt++;
+      } else {
+	cpt = 0;
+      }
     }
   }
 }

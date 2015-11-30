@@ -24,3 +24,6 @@ void norme_pixel(ac_int<8,false> *norme,
 
 void arg_pixel(ac_int<4,false> *arg, 
 	       ac_int<16,false> grad);
+
+void arg_norme_pixel(ac_int<13,false> *res,
+		     ac_int<16,false> grad);

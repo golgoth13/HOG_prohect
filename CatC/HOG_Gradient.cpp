@@ -42,7 +42,7 @@ void gradient_ver(ac_int<9,false> coord_x,
         mem_Ram_Read(mem_Ram_addr,&val_a);
         *gradient_v = val_a  - val_b ;
 	//a virer pour la synthese
-	cout << coord_x << endl;
+	//cout << coord_x << endl;
   } else {
     *gradient_v = 0;
   }
@@ -67,7 +67,7 @@ void gradient_hor(ac_int<9,false> coord_x,
         mem_Ram_Read(mem_Ram_addr,&val_a);
         *gradient_h = val_b - val_a;
 	//a virer pour la synthese
-	cout << coord_x << endl;
+	//cout << val_a << " " << val_b << endl;
   } else {
     *gradient_h = 0;
   }
@@ -80,9 +80,21 @@ void gradient_pixel(ac_int<9,false> coord_x,
 
 	
 	ac_int<8,true> gradient_h, gradient_v;
+	ac_int<16,true> gradient_signed;
 	gradient_hor(coord_x, coord_y, &gradient_h);
 	gradient_ver(coord_x, coord_y, &gradient_v);
+	gradient_signed =  gradient_h;
+	gradient_signed = (gradient_signed<<8) | gradient_v;
 	*gradient_p =  gradient_h;
-	*gradient_p = (*gradient_p<<8) | gradient_v;
+	*gradient_p = (*gradient_p<<8);
+	cout << *gradient_p << endl;
+	*gradient_p = *gradient_p | gradient_v;
+	//a virer pour la synthese
+	cout << gradient_h  << " " 
+	     << gradient_v  << " " 
+	     << coord_x     << " " 
+	     << coord_y     << " " 
+	     << *gradient_p << " "
+	     << gradient_signed << endl;
 
 }
