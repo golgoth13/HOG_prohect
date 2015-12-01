@@ -45,7 +45,8 @@ void Main_HOG (ac_int<17,false> *mem_Ram_Addr,
   ac_int<9,false>  x, cell_x;
   ac_int<8,false>  y, cell_y;
   ac_int<8,false>  tmp_value = 10 ;
-  ac_int<16,false> *gradient;
+  ac_int<9,true> gradient_h;
+  ac_int<9,true> gradient_v;
   ac_int<13,false> *histo;
   unsigned int cpt;
 
@@ -56,9 +57,9 @@ void Main_HOG (ac_int<17,false> *mem_Ram_Addr,
       cpt = 0;
     top_cell_y : for ( cell_y = y; cell_y <= y+CELL_HEIGHT; cell_y++){
       top_cell_x : for ( cell_x = x; cell_x <= x+CELL_WIDTH; cell_x++){
-	  gradient_pixel(cell_x, cell_y, gradient);
-	  //arg_norme_pixel(histo, *gradient);
-	  //cell[cpt] = *histo;
+	  gradient_pixel(cell_x, cell_y, &gradient_h, &gradient_v);
+	  arg_norme_pixel(histo, gradient_h,gradient_v);
+	  cell[cpt] = *histo;
 	  cpt++;
 	}
       } 
@@ -66,7 +67,7 @@ void Main_HOG (ac_int<17,false> *mem_Ram_Addr,
       //cout << x << " " << y << endl ;
       //pour la simu : 
       //gradient_hor(x,y,grad_hor);
-      *mem_Hog_Data = *gradient;
+      *mem_Hog_Data = gradient_h;
       *mem_Hog_WE = 1;
       
     }

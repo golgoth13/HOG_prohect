@@ -20,10 +20,13 @@
 #include "ac_int.h"
 
 void norme_pixel(ac_int<8,false> *norme,
-		 ac_int<16,false> grad);
+		 ac_int<9,true>  gradient_v,
+		 ac_int<9,true>  gradient_h);
 
-void arg_pixel(ac_int<4,false> *arg, 
-	       ac_int<16,false> grad);
+void arg_pixel(ac_int<4,false> *arg,
+	       ac_int<9,true>  gradient_v,
+	       ac_int<9,true>  gradient_h);
 
 void arg_norme_pixel(ac_int<13,false> *res,
-		     ac_int<16,false> grad);
+		     ac_int<9,true>  gradient_v,
+		     ac_int<9,true>  gradient_h);

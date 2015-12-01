@@ -19,6 +19,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "ac_int.h"
 #include "HOG_Histogram.h"
+//a virer pour la synthese
+#include <iostream>
+using namespace std;
 
 #define PRECISION_RACINE 18
 #define PRECISION_ATAN   256
@@ -28,20 +31,16 @@ const unsigned int mysqrt[]   = {0,1,1,2,3,4,6,8,11,16,23,32,45,64,91,128,181,25
 const unsigned int arctan[] = {256,25,78,137,210,312,479,844,2599};
 
 void norme_pixel(ac_int<9,false> *norme,
-		 ac_int<16,false> grad) {
+		 ac_int<9,true>  gradient_v,
+		 ac_int<9,true>  gradient_h) {
 
-	
-        ac_int<8,true> grad_h, grad_v;
-        ac_int<9,false> result = 0;
 	// (x*x+y*y);
 	unsigned int two_square = 0;
 	unsigned int i          = 1;
 	unsigned int incr       = 2;
+	ac_int<9,false> result  = 0; 
 
-	grad_v = grad.slc<8>(0) ;    //bit de poid faible
-	grad_h = grad.slc<8>(8) ;   //bit poid fort
-
-	two_square = grad_v*grad_v + grad_h*grad_h;
+	two_square = gradient_v*gradient_v + gradient_h*gradient_h;
 
 	//sqrt(two_square)
 	if (two_square <= incr) {
@@ -62,23 +61,21 @@ void norme_pixel(ac_int<9,false> *norme,
 
 }
 
-void arg_pixel(ac_int<4,false> *arg, 
-	       ac_int<16,false> grad) {
+void arg_pixel(ac_int<4,false> *arg,
+	       ac_int<9,true>  gradient_v,
+	       ac_int<9,true>  gradient_h) {
 
-        ac_int<8,true> grad_h,grad_v;
         ac_int<4,false>  result = 0;
 	int i, val;
-	grad_v = grad.slc<8>(0) ;    //bit de poid faible
-	grad_h = grad.slc<8>(8) ;   //bit poid fort
 	
-	if(grad_v == 0) { // Evite la division par 0
-	     if (grad_h == 0) {
+	if(gradient_v == 0) { // Evite la division par 0
+	     if (gradient_h == 0) {
                  result = 0;
              } else {
                  result = N_CLASSES>>1;
              }
 	} else {
-	     val = (grad_v*PRECISION_ATAN)/grad_h;
+	     val = (gradient_v*PRECISION_ATAN)/gradient_h;
 	     if (val >0) {
 	          for (i = N_CLASSES>>1; i > 0; i--) {
 		      if (val >= arctan[i-1])
@@ -98,18 +95,20 @@ void arg_pixel(ac_int<4,false> *arg,
 		  }
 	     }
 	}
-
+	cout << " ok" << endl;
 	*arg = result ;
+
 }
 
 void arg_norme_pixel(ac_int<13,false> *res,
-		     ac_int<16,false> grad) {
+		     ac_int<9,true>  gradient_v,
+		     ac_int<9,true>  gradient_h) {
 
-        ac_int<9,false> *norme;
-	ac_int<4,false> *arg;
-	arg_pixel(arg,grad);
-	*res = *arg;
-	norme_pixel(norme,grad);
-	*res = (*res<<9) | *norme ;
-  
+        ac_int<9,false> norme;
+	ac_int<4,false> arg;
+	arg_pixel(&arg,gradient_v,gradient_h);
+	*res = arg;
+	norme_pixel(&norme,gradient_v,gradient_h);
+	*res = (*res<<9) | norme ;
+	//cout << *res << " " << arg << " " << norme << endl;
 }

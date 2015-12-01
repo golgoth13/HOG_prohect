@@ -22,12 +22,13 @@
 
 void gradient_hor(ac_int<9,false> coord_x,
 		  ac_int<8,false> coord_y,
-		  ac_int<8,true> *gradient_h);
+		  ac_int<9,true> *gradient_h);
 
 void gradient_ver(ac_int<9,false> coord_x,
 		  ac_int<8,false> coord_y,
-		  ac_int<8,true> *gradient_v);
+		  ac_int<9,true> *gradient_v);
 
 void gradient_pixel(ac_int<9,false> coord_x,
 		    ac_int<8,false> coord_y,
-		    ac_int<16,false> *gradient_p);
+		    ac_int<9,true>  *gradient_h,
+		    ac_int<9,true>  *gradient_v);
