@@ -95,7 +95,6 @@ void arg_pixel(ac_int<4,false> *arg,
 		  }
 	     }
 	}
-	cout << " ok" << endl;
 	*arg = result ;
 
 }
@@ -110,5 +109,5 @@ void arg_norme_pixel(ac_int<13,false> *res,
 	*res = arg;
 	norme_pixel(&norme,gradient_v,gradient_h);
 	*res = (*res<<9) | norme ;
-	//cout << *res << " " << arg << " " << norme << endl;
+	cout << *res << " " << arg << " " << norme << endl;
 }
