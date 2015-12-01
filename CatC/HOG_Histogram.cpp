@@ -38,7 +38,7 @@ void norme_pixel(ac_int<9,false> *norme,
 	unsigned int two_square = 0;
 	unsigned int i          = 1;
 	unsigned int incr       = 2;
-	ac_int<9,false> result  = 0; 
+	ac_int<9,false> result  = 511; 
 
 	two_square = gradient_v*gradient_v + gradient_h*gradient_h;
 
@@ -47,9 +47,9 @@ void norme_pixel(ac_int<9,false> *norme,
 	        result = mysqrt[two_square];
 	} else {
 	     	for (i = 3; i <= PRECISION_RACINE; i++) {
-		       if (two_square <= (incr<<1)) {
+		       if (two_square <= (incr<<1) && result == 511) {
 			 result = mysqrt[i-1] + 
-			          (((mysqrt[i] - mysqrt[i-1])*(two_square - incr))/incr);
+			          (((mysqrt[i] - mysqrt[i-1])*(two_square - incr))>>(i-2));
 		       }
 		       incr = incr<<1;
 		}
@@ -105,9 +105,10 @@ void arg_norme_pixel(ac_int<13,false> *res,
 
         ac_int<9,false> norme;
 	ac_int<4,false> arg;
-	arg_pixel(&arg,gradient_v,gradient_h);
+	//arg_pixel(&arg,gradient_v,gradient_h);
+	arg = 4;
 	*res = arg;
 	norme_pixel(&norme,gradient_v,gradient_h);
 	*res = (*res<<9) | norme ;
-	cout << *res << " " << arg << " " << norme << endl;
+	//cout << gradient_h << " " << gradient_v << " " << norme << endl;
 }

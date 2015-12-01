@@ -47,7 +47,7 @@ void Main_HOG (ac_int<17,false> *mem_Ram_Addr,
   ac_int<8,false>  tmp_value = 10 ;
   ac_int<9,true> gradient_h;
   ac_int<9,true> gradient_v;
-  ac_int<13,false> *histo;
+  ac_int<13,false> histo;
   unsigned int cpt;
 
   mem_Ram_Init(tmp_value);
@@ -58,8 +58,8 @@ void Main_HOG (ac_int<17,false> *mem_Ram_Addr,
     top_cell_y : for ( cell_y = y; cell_y <= y+CELL_HEIGHT; cell_y++){
       top_cell_x : for ( cell_x = x; cell_x <= x+CELL_WIDTH; cell_x++){
 	  gradient_pixel(cell_x, cell_y, &gradient_h, &gradient_v);
-	  arg_norme_pixel(histo, gradient_h,gradient_v);
-	  cell[cpt] = *histo;
+	  arg_norme_pixel(&histo, gradient_h,gradient_v);
+	  cell[cpt] = histo;
 	  cpt++;
 	}
       } 
