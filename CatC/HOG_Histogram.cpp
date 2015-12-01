@@ -65,11 +65,10 @@ void arg_pixel(ac_int<4,false> *arg,
 	       ac_int<9,true>  gradient_v,
 	       ac_int<9,true>  gradient_h) {
 
-        ac_int<4,false>  result = 0;
+        ac_int<5,false>  result = 31;
 	int i, val;
-	
-	if(gradient_v == 0) { // Evite la division par 0
-	     if (gradient_h == 0) {
+	if(gradient_h == 0) { // Evite la division par 0
+	     if (gradient_v == 0) {
                  result = 0;
              } else {
                  result = N_CLASSES>>1;
@@ -78,25 +77,24 @@ void arg_pixel(ac_int<4,false> *arg,
 	     val = (gradient_v*PRECISION_ATAN)/gradient_h;
 	     if (val >0) {
 	          for (i = N_CLASSES>>1; i > 0; i--) {
-		      if (val >= arctan[i-1])
+		      if (val >= arctan[i-1] && result == 31)
 			result = i;
 		  }
 	     }
-	     if (val >= -1*(arctan[0])) {
+	     if (val >= -1*(arctan[0]) && result == 31) {
                   result = 0;
 	     } else {
 	       for (i = -1; i > -1*(N_CLASSES>>1); i--) {
-		 if (val >= -1*(arctan[-i]))
+		 if (val >= -1*(arctan[-i]) && result == 31)
 		         result = i+N_CLASSES;
 		  }
 		  
-		  if (result == 0) {
+		  if (result == 31) {
 		      result = N_CLASSES>>1;
 		  }
 	     }
 	}
-	*arg = result ;
-
+	*arg = result.slc<4>(0) ;
 }
 
 void arg_norme_pixel(ac_int<13,false> *res,
@@ -105,10 +103,9 @@ void arg_norme_pixel(ac_int<13,false> *res,
 
         ac_int<9,false> norme;
 	ac_int<4,false> arg;
-	//arg_pixel(&arg,gradient_v,gradient_h);
-	arg = 4;
+	arg_pixel(&arg,gradient_v,gradient_h);
 	*res = arg;
 	norme_pixel(&norme,gradient_v,gradient_h);
 	*res = (*res<<9) | norme ;
-	//cout << gradient_h << " " << gradient_v << " " << norme << endl;
+	//cout << gradient_h << " " << gradient_v << " " << arg << " " << norme << endl;
 }
