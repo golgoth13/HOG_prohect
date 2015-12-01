@@ -20,23 +20,29 @@
 #include "Mem_Ram.h"
 #include "stdio.h"
 #include "ac_int.h"
+// Enlever pour la synthèse
+#include <fstream>
+//#include <iostream>
 
 static ac_int<8,false> m_image[WIDTH_IMAGE*HEIGHT_IMAGE];
 
 void mem_Ram_Init(ac_int<8,false> v) {
   unsigned int i;
   unsigned int j;
-  unsigned int cpt =0;
- Ram_X : for(j = 0; j < HEIGHT_IMAGE-1; j++) {
-  Ram_Y : for(i = 0; i < WIDTH_IMAGE-1; i++) {
-      m_image[i+WIDTH_IMAGE*j] = cpt;
-      if (cpt <233) {
-	cpt++;
-      } else {
-	cpt = 0;
-      }
+  std::string magic_number;
+  int useless;
+  std::ifstream fichier("../../img/empire.pgm", std::ios::in);
+//  if(!fichier) {
+//    std::cout << "ça marche pas" << std::endl;
+//  }
+  fichier >> magic_number >> useless >> useless >> useless;
+ Ram_X : for(j = 0; j < HEIGHT_IMAGE; j++) {
+  Ram_Y : for(i = 0; i < WIDTH_IMAGE; i++) {
+      fichier >> useless;
+      m_image[i+WIDTH_IMAGE*j] = useless;
     }
   }
+  fichier.close();
 }
  
 
