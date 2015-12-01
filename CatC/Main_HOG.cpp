@@ -62,7 +62,13 @@ void Main_HOG (ac_int<17,false> *mem_Ram_Addr,
 	  cell[cpt] = *histo;
 	  cpt++;
 	}
-      } 
+      }
+      for(k = 0; k < CELL_SIZE; k++) {
+	if (cell[k] > val) {
+	  val = cell[k];
+	  classe = k;
+	}
+      }
       //a virer pour la synthese
       //cout << x << " " << y << endl ;
       //pour la simu : 
