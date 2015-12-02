@@ -71,9 +71,10 @@ void Main_HOG (ac_int<8,false> *mem_Ram_Data,
       //ecriture du resultat sans normalisation
     top_hog_y : for ( cell_y = y; cell_y < y+CELL_HEIGHT; cell_y++){
       top_hog_x : for ( cell_x = x; cell_x < x+CELL_WIDTH; cell_x++){
-	
+	  if (val > 1024)
+                    val = 1024;
 	  mem_Hog_addr = (cell_y)*WIDTH_IMAGE + cell_x;
-	  mem_Ram_Hog[mem_Hog_addr] = patern[classe][cpt];
+	  mem_Ram_Hog[mem_Hog_addr] = val*patern[classe][cpt]/1024;
 	  cpt++;
 	
 	}
