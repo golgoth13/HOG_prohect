@@ -17,12 +17,24 @@
 // Additional Comments: 
 //
 ////////////////////////////////////////////////////////////////////////////////
+#include "ac_int.h"
 
 #define WIDTH_IMAGE  320
 #define HEIGHT_IMAGE 240
-#define CELL_WIDTH  4
-#define CELL_HEIGHT 4
-#define CELL_SIZE   16
+#define CELL_WIDTH   4
+#define CELL_HEIGHT  4
+#define CELL_SIZE    16
+
+static  const ac_int<8,false> patern[CELL_SIZE][CELL_SIZE] = {
+  {0,157,159,0,0,157,159,0,0,157,159,0,0,157,159,0},
+  {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+  {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+  {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4},
+  {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5},
+  {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6},
+  {7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7},
+  {8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8}};
+
 /*#include "ac_int.h"
 
 // Initialise toutes les cases 

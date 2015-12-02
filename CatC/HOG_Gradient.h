@@ -17,7 +17,6 @@
 // Additional Comments: 
 //
 ////////////////////////////////////////////////////////////////////////////////
-#include "Mem_Ram.h"
 #include "ac_int.h"
 
 void gradient_hor(ac_int<9,false> coord_x,

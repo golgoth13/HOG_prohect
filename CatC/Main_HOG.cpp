@@ -28,15 +28,11 @@
 #include <iostream>
 using namespace std;
 
-//sauvegarde d'une cellule
-//static ac_int<13,false> cell[CELL_SIZE];  //4 bits de poid fort pour arg et 
-                                          //9 pour la norme 
-
 
 #pragma design top
 
-void Main_HOG (ac_int<8,false>  *mem_Ram_Data,
-	       ac_int<13,false> *cell) {
+void Main_HOG (ac_int<8,false> *mem_Ram_Data,
+	       ac_int<8,false> *mem_Ram_Hog) {
 
   ac_int<9,false> x, cell_x;
   ac_int<8,false> y, cell_y;
@@ -44,7 +40,8 @@ void Main_HOG (ac_int<8,false>  *mem_Ram_Data,
   ac_int<9,true> gradient_h;
   ac_int<9,true> gradient_v;
   ac_int<13,false> histo, addr_Hog_Ram;
-  unsigned int cpt,val,classe;
+  ac_int<17,false> mem_Hog_addr;
+  unsigned int cpt,val,classe,k;
 
 
  top_loop_y : for (y = 0; y <= HEIGHT_IMAGE-1; y+= CELL_HEIGHT) {
@@ -52,28 +49,39 @@ void Main_HOG (ac_int<8,false>  *mem_Ram_Data,
       cpt = 0;
       val = 0;
       classe = 0;
-    top_cell_y : for ( cell_y = y; cell_y <= y+CELL_HEIGHT; cell_y++){
-      top_cell_x : for ( cell_x = x; cell_x <= x+CELL_WIDTH; cell_x++){
+    top_cell_y : for ( cell_y = y; cell_y < y+CELL_HEIGHT; cell_y++){
+      top_cell_x : for ( cell_x = x; cell_x < x+CELL_WIDTH; cell_x++){
 	  gradient_pixel(cell_x, cell_y, &gradient_h, &gradient_v, mem_Ram_Data);
 	  arg_norme_pixel(&histo, gradient_h, gradient_v);
-	  cell[cpt] = histo;
+
+	  //vote
+	  if (histo.slc<9>(0) > val) {
+	    val = histo.slc<9>(0);
+	    classe = histo.slc<4>(9);
+	  }
+	  //pour debug
+	  /*cout << cell_x << " "
+	       << cell_y << " "
+	       <<  histo.slc<9>(0) << " "
+	       << histo.slc<4>(9) << " " << endl;
+	  */ 
+	}
+      }
+ 
+      //ecriture du resultat sans normalisation
+    top_hog_y : for ( cell_y = y; cell_y < y+CELL_HEIGHT; cell_y++){
+      top_hog_x : for ( cell_x = x; cell_x < x+CELL_WIDTH; cell_x++){
+	
+	  mem_Hog_addr = (cell_y)*WIDTH_IMAGE + cell_x;
+	  mem_Ram_Hog[mem_Hog_addr] = patern[classe][cpt];
 	  cpt++;
+	
 	}
       }
-      //vote
-      for(k = 0; k < CELL_SIZE; k++) {
-	if (cell[k] > val) {
-	  val = cell[k];
-	  classe = k;
-	}
-      }
-      
+	
+
     }
   }
   
 }
 
-//void mem_Hog_Write(ac_int<16> addr,ac_int<8> data){
-  
-
-//}
