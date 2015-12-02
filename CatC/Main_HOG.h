@@ -19,9 +19,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "ac_int.h"
 
-void Main_HOG (ac_int<17,false> *mem_Ram_Addr, 
-	       ac_int<8,false>  mem_Ram_Data,
-	       ac_int<13,false> *mem_Hog_Addr,
-	       ac_int<16,false> *mem_Hog_Data,
-	       bool       *mem_Hog_WE
+void Main_HOG (ac_int<8,false>  *mem_Ram_Data,
+	       ac_int<13,false> *cell
 	       );

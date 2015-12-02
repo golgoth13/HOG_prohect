@@ -1,8 +1,8 @@
 BIN_DIR =	bin/
 OBJ_DIR =	obj/
 SRC_DIR =	./
-#INC_DIR =	/softslin/catapult2011a_200_12/Mgc_home/shared/include/
-INC_DIR =       ./
+INC_DIR =	/softslin/catapult2011a_200_12/Mgc_home/shared/include/
+#INC_DIR =       ./
  
 #files
 BIN =	${BIN_DIR}exec

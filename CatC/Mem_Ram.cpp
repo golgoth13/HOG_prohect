@@ -17,7 +17,7 @@
 // Additional Comments: 
 //
 ////////////////////////////////////////////////////////////////////////////////
-#include "Mem_Ram.h"
+/*#include "Mem_Ram.h"
 #include "stdio.h"
 #include "ac_int.h"
 // Enlever pour la synthèse
@@ -53,4 +53,4 @@ void mem_Ram_Read(ac_int<17,false> addr, ac_int<8,false> *data){
 void mem_Ram_Write(ac_int<17,false> addr, ac_int<8,false> value){
   m_image[addr] = value;
 
-}
+}*/
