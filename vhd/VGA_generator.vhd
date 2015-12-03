@@ -36,13 +36,13 @@ use work.packageVGA.all;
 
 entity VGA_generator is
     Port ( clk : in STD_LOGIC;
-           btn3 : in STD_LOGIC;							
-           Hsync : out STD_LOGIC := '0';
-           Vsync : out STD_LOGIC := '0';
-           addr : out STD_LOGIC_VECTOR (16 downto 0) := (others => '0');
-           coord : out coordonnee;
-           activeArea : out boolean;
-           reset : out STD_LOGIC);
+    		btn3 : in STD_LOGIC;							
+			Hsync : out STD_LOGIC := '0';
+			Vsync : out STD_LOGIC := '0';
+			addr : out STD_LOGIC_VECTOR (16 downto 0) := (others => '0');
+			coord : out coordonnee;
+			activeArea : out boolean;
+			reset : out STD_LOGIC);
 end VGA_generator;
 
 architecture Behavioral of VGA_generator is
@@ -80,7 +80,7 @@ begin
 			pixel.y := std_logic_vector(to_unsigned(int_y,9));
 			coord.x <= pixel.x; -- Mise à jour des coordonnées du pixel de l'image
 			coord.y <= pixel.y;
-			addr <= pixel.y(8 downto 0) & pixel.x(9 downto 0); -- Envoi de l'adresse de la case mémoire à lire
+			addr <= pixel.y(8 downto 1) & pixel.x(9 downto 1); -- Envoi de l'adresse de la case mémoire à lire
 			activeArea <= activeArea_v and activeArea_h;
 		end if;
 	end process;
@@ -102,8 +102,8 @@ begin
 			activeArea_v <= true;
 			int_y <= Vcnt-Vstart_img; -- Décompte de vertical pulse et backporch
 		else
-                  activeArea_v <= false;
-                  int_y <= 0;
+        	activeArea_v <= false;
+       	int_y <= 0;
 		end if;
 	end process;  
 

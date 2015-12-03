@@ -74,7 +74,7 @@ void Main_HOG (ac_int<8,false> *mem_Ram_Data,
 	  if (val > 1024)
                     val = 1024;
 	  mem_Hog_addr = (cell_y)*WIDTH_IMAGE + cell_x;
-	  mem_Ram_Hog[mem_Hog_addr] = val*patern[classe][cpt]/1024;
+	  mem_Ram_Hog[mem_Hog_addr] = val*patern[classe][cpt]/511;
 	  cpt++;
 	
 	}
