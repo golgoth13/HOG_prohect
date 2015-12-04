@@ -1,20 +1,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Company:        ENSIMAG
 // Engineer:       Hans Julien, Perraud Frédéric
-// 
-// Create Date:    08:11:44 11/10/2015 
-// Design Name: 
-// Module Name:    MAIN program for Catapult C 
+//
+// Create Date:    08:11:44 11/10/2015
+// Design Name:
+// Module Name:    MAIN program for Catapult C
 // Project Name:   pedestre detection HLS
-// Target Devices: 
-// Tool versions: 
-// Description: 
+// Target Devices:
+// Tool versions:
+// Description:
 //
-// Dependencies: 
+// Dependencies:
 //
-// Revision: 
+// Revision:
 // Revision 0.01 - File Created
-// Additional Comments: 
+// Additional Comments:
 //
 ////////////////////////////////////////////////////////////////////////////////
 #include "Main_HOG.h"
@@ -43,46 +43,61 @@ void Main_HOG (ac_int<8,false> *mem_Ram_Data,
   ac_int<17,false> mem_Hog_addr;
   unsigned int cpt,val,classe,k;
 
+  ac_int<12, false> cell[16];
 
  top_loop_y : for (y = 0; y <= HEIGHT_IMAGE-1; y+= CELL_HEIGHT) {
   top_loop_x : for (x = 0; x <= WIDTH_IMAGE-1; x+= CELL_WIDTH) {
+      for(k = 0; k < 16; k++) {
+        cell[k] = 0;
+      }
       cpt = 0;
       val = 0;
       classe = 0;
     top_cell_y : for ( cell_y = y; cell_y < y+CELL_HEIGHT; cell_y++){
       top_cell_x : for ( cell_x = x; cell_x < x+CELL_WIDTH; cell_x++){
-	  gradient_pixel(cell_x, cell_y, &gradient_h, &gradient_v, mem_Ram_Data);
-	  arg_norme_pixel(&histo, gradient_h, gradient_v);
+	      gradient_pixel(cell_x, cell_y, &gradient_h, &gradient_v, mem_Ram_Data);
+	      arg_norme_pixel(&histo, gradient_h, gradient_v);
 
-	  //vote
-	  if (histo.slc<9>(0) > val) {
-	    val = histo.slc<9>(0);
-	    classe = histo.slc<4>(9);
-	  }
-	  //pour debug
-	  /*cout << cell_x << " "
-	       << cell_y << " "
-	       <<  histo.slc<9>(0) << " "
-	       << histo.slc<4>(9) << " " << endl;
-	  */ 
-	}
+	      //vote
+          val = histo.slc<9>(0);
+	      classe = histo.slc<4>(9);
+	      cell[classe] += val;
+
+	      //pour debug
+	      /*cout << cell_x << " "
+	             << cell_y << " "
+	             <<  histo.slc<9>(0) << " "
+	             << histo.slc<4>(9) << " " << endl;
+	      */
+	    }
       }
- 
+
+      val = 0;
+
+      for(k = 0; k < 16; k++) {
+        if (cell[k] >= val) {
+          val = cell[k];
+          classe = k;
+        }
+      }
+
+
+	  if (val > 1024)
+        val = 1024;
+
       //ecriture du resultat sans normalisation
     top_hog_y : for ( cell_y = y; cell_y < y+CELL_HEIGHT; cell_y++){
       top_hog_x : for ( cell_x = x; cell_x < x+CELL_WIDTH; cell_x++){
-	  if (val > 1024)
-                    val = 1024;
-	  mem_Hog_addr = (cell_y)*WIDTH_IMAGE + cell_x;
-	  mem_Ram_Hog[mem_Hog_addr] = val*patern[classe][cpt]/511;
-	  cpt++;
-	
-	}
+	      mem_Hog_addr = (cell_y)*WIDTH_IMAGE + cell_x;
+	      mem_Ram_Hog[mem_Hog_addr] = (val*patern[classe][cpt])>>10; // /1024
+	      cpt++;
+
+	    }
       }
-	
+
 
     }
   }
-  
+
 }
 

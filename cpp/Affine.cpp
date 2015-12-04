@@ -4,20 +4,10 @@ using namespace std;
 
 Affine::Affine()
 {
-    //readRacine();
     readRacine2();
-    //readArctangeante();
     readArctangeante2();
+    readInverse();
 }
-
-/*int Affine::racine(int x)
-{
-    if (x < 0 || x > 130050) { // 255*255 *2 = 130 050
-        cout << "Calcul de Racine impossible" << endl;
-        exit(1);
-    }
-    return m_racine[x];
-}*/
 
 int Affine::racine2(int x)
 {
@@ -39,29 +29,8 @@ int Affine::racine2(int x)
         }
         incr *= 2;
     }
-    return m_racine[x];
+    return 0;
 }
-
-// Calcule Arctan(num/denom)
-/*int Affine::arctangeante(int num, int denom)
-{
-    int x = num;
-    int y = denom;
-    if (y == 0) {
-        cout << "Calcul de Arctangeante impossible" << endl;
-        exit(1);
-    }
-    if (x < -127)
-        x = -127;
-    if (x > 127)
-        x = 127;
-    if (y < -127)
-        y = -127;
-    if (y > 127)
-        int m_racine[130050];
-        y = 127;
-    return m_arctangeante[x+127][y+127];
-}*/
 
 // Calcule Arctan(num/denom)
 int Affine::arctangeante2(int num, int denom)
@@ -71,7 +40,8 @@ int Affine::arctangeante2(int num, int denom)
         cout << "Calcul de Arctangeante impossible" << endl;
         exit(1);
     }
-    val = num * m_precision_atan / denom;
+    val = num * m_precision_atan * inverse(denom) / PRECISION_INVERSE;
+    //val = num * m_precision_atan / denom;
     if (val > 0) {
         for (i = N_CLASSES/2; i > 0; i--) {
             if (val >= m_arctangeante[i-1])
@@ -87,22 +57,10 @@ int Affine::arctangeante2(int num, int denom)
     return N_CLASSES/2;
 }
 
-// Supprimer cette fonction pour la synthèse
-/*void Affine::writeRacine()
+int Affine::inverse(int x)
 {
-    ofstream fichier_out("affine/racine.txt", ios::out);
-    if(!fichier_out) {
-        cerr << "ça marche pas" << endl;
-        exit(1);
-    }
-
-    for (int i = 0; i <= 130050; i++) {
-        int val = round(sqrt(i));
-        fichier_out << val << " ";
-    }
-
-    fichier_out.close();
-}*/
+    return m_inverse[x - 1];
+}
 
 // Supprimer cette fonction pour la synthèse
 void Affine::writeRacine2()
@@ -127,27 +85,6 @@ void Affine::writeRacine2()
 }
 
 // Supprimer cette fonction pour la synthèse
-/*void Affine::writeArctangeante()
-{
-    ofstream fichier_out("affine/arctangeante.txt", ios::out);
-    if(!fichier_out) {
-        cerr << "ça marche pas" << endl;
-        exit(1);
-    }
-
-    for (int j = -127; j <= 127; j++) {
-        if (j != 0) {
-            for (int i = -127; i <= 127; i++) {
-                int val = round(8.0*atan(i/(double)j)/(M_PI/2));
-                fichier_out << val << " ";
-            }
-        }
-    }
-
-    fichier_out.close();
-}*/
-
-// Supprimer cette fonction pour la synthèse
 void Affine::writeArctangeante2(int precision)
 {
     ofstream fichier_out("affine/arctangeante2.txt", ios::out);
@@ -168,20 +105,19 @@ void Affine::writeArctangeante2(int precision)
     fichier_out.close();
 }
 
-/*void Affine::readRacine()
+void Affine::writeInverse()
 {
-    ifstream fichier_in("affine/racine.txt", ios::in);
-    if(!fichier_in) {
+    ofstream fichier_out("affine/inverse.txt", ios::out);
+    if(!fichier_out) {
         cerr << "ça marche pas" << endl;
         exit(1);
     }
-
-    for (int i = 0; i <= 130050; i++) {
-        fichier_in >> m_racine[i];
+    for (int i = 1; i < 256; i++) {
+        fichier_out << round(PRECISION_INVERSE/i) << " ";
     }
 
-    fichier_in.close();
-}*/
+    fichier_out.close();
+}
 
 void Affine::readRacine2()
 {
@@ -199,25 +135,6 @@ void Affine::readRacine2()
     fichier_in.close();
 }
 
-/*void Affine::readArctangeante()
-{
-    ifstream fichier_in("affine/arctangeante.txt", ios::in);
-    if(!fichier_in) {
-        cerr << "ça marche pas" << endl;
-        exit(1);
-    }
-
-    for (int j = -127; j <= 127; j++) {
-        if (j != 0) {
-            for (int i = -127; i <= 127; i++) {
-                fichier_in >> m_arctangeante[i+127][j+127];
-            }
-        }
-    }
-
-    fichier_in.close();
-}*/
-
 void Affine::readArctangeante2()
 {
     ifstream fichier_in("affine/arctangeante2.txt", ios::in);
@@ -229,6 +146,21 @@ void Affine::readArctangeante2()
     fichier_in >> m_precision_atan;
     for (int i = 0; i < N_CLASSES; i++) {
         fichier_in >> m_arctangeante[i];
+    }
+
+    fichier_in.close();
+}
+
+void Affine::readInverse()
+{
+    ifstream fichier_in("affine/inverse.txt", ios::in);
+    if(!fichier_in) {
+        cerr << "ça marche pas" << endl;
+        exit(1);
+    }
+
+    for (int i = 1; i < 256; i++) {
+        fichier_in >> m_inverse[i - 1];
     }
 
     fichier_in.close();

@@ -136,7 +136,7 @@ void Histo::calcul_arg_pixel(int* arg, int x, int y)
         if (y == 0) {
             *arg = 0;
         } else {
-            *arg = M_PI/2;
+            *arg = N_CLASSES/2;
         }
     } else {
         *arg = m_calcul.arctangeante2(y, x);

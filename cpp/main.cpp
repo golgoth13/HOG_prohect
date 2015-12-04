@@ -161,24 +161,12 @@ int main()
 
 
     // Affichage argument
-    //int borne = 20;
-    /*for (int j = borne; j >= -1*borne; j--) {
-        for (i = -1*borne; i <= borne; i++) {
-            if (i != 0) {
-                int val = calcul.arctangeante(j, i);
-                if (val >= 0)
-                    cout << " ";
-                cout << val << " ";
-            }
-        }
-        cout << endl;
-    }
-    cout << endl;
+    /*int borne = 50;
     for (int j = borne; j >= -1*borne; j--) {
         for (i = -1*borne; i <= borne; i++) {
             if (i != 0) {
                 int val = calcul.arctangeante2(j, i);
-                if (val >= 0)
+                if (val < 10)
                     cout << " ";
                 cout << val << " ";
             }
@@ -213,7 +201,21 @@ int main()
         Affine calcul;
         calcul.writeRacine2();
         calcul.writeArctangeante2(256);
+        calcul.writeInverse();
     }
+
+    // Calcule précision inverse
+    /*Affine calcul;
+    double compare = 0;
+    int cpt = 0;
+    for (i = 1; i < 256; i++) {
+        if ((double)calcul.inverse(i) / PRECISION_INVERSE != 1.0/i)
+        compare += abs((double)calcul.inverse(i) / PRECISION_INVERSE - 1.0/i) / (1.0/i);
+        cpt++;
+        //cout << (double)calcul.inverse(i) / PRECISION_INVERSE << " " << 1.0/i << endl;
+    }
+    cout << setw(3) << 100 - (100*compare/cpt) << "%" << endl;*/
+
     Histo histo(large,haut,tab);
     //histo.affiche();
     //histo.affiche_ascii();

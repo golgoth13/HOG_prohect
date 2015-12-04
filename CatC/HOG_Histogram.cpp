@@ -1,20 +1,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Company:        ENSIMAG
 // Engineer:       Hans Julien, Perraud Frédéric
-// 
-// Create Date:    08:11:44 23/10/2015 
-// Design Name: 
+//
+// Create Date:    08:11:44 23/10/2015
+// Design Name:
 // Module Name:    Histogram calculation in cellular
 // Project Name:   pedestre detection HLS
-// Target Devices: 
-// Tool versions: 
-// Description: 
+// Target Devices:
+// Tool versions:
+// Description:
 //
-// Dependencies: 
+// Dependencies:
 //
-// Revision: 
+// Revision:
 // Revision 0.01 - File Created
-// Additional Comments: 
+// Additional Comments:
 //
 ////////////////////////////////////////////////////////////////////////////////
 #include "ac_int.h"
@@ -27,8 +27,20 @@ using namespace std;
 #define PRECISION_ATAN   256
 #define N_CLASSES        16
 
-const unsigned int mysqrt[]   = {0,1,1,2,3,4,6,8,11,16,23,32,45,64,91,128,181,256,362};
-const unsigned int arctan[] = {256,25,78,137,210,312,479,844,2599};
+const unsigned int mysqrt[]  = {0,1,1,2,3,4,6,8,11,16,23,32,45,64,91,128,181,256,362};
+const unsigned int arctan[]  = {25,78,137,210,312,479,844,2599};
+const unsigned int inverse[] = {256,128,85,64,51,42,36,32,28,25,23,21,19,18,17,
+                                16,15,14,13,12,12,11,11,10,10,9,9,9,8,8,8,8,7,
+                                7,7,7,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,4,4,4,4,4,
+                                4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+                                3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+                                2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+                                2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                                1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                                1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                                1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                                1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+                                1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 
 void norme_pixel(ac_int<9,false> *norme,
 		 ac_int<9,true>  gradient_v,
@@ -38,7 +50,7 @@ void norme_pixel(ac_int<9,false> *norme,
 	unsigned int two_square = 0;
 	unsigned int i          = 1;
 	unsigned int incr       = 2;
-	ac_int<9,false> result  = 511; 
+	ac_int<9,false> result  = 511;
 
 	two_square = gradient_v*gradient_v + gradient_h*gradient_h;
 
@@ -47,8 +59,8 @@ void norme_pixel(ac_int<9,false> *norme,
 	        result = mysqrt[two_square];
 	} else {
 	     	for (i = 3; i <= PRECISION_RACINE; i++) {
-		       if (two_square <= (incr<<1) && result == 511) {
-			 result = mysqrt[i-1] + 
+		       if (result == 511 && two_square <= (incr<<1)) {
+			 result = mysqrt[i-1] +
 			          (((mysqrt[i] - mysqrt[i-1])*(two_square - incr))>>(i-2));
 		       }
 		       incr = incr<<1;
@@ -74,21 +86,22 @@ void arg_pixel(ac_int<4,false> *arg,
                  result = N_CLASSES>>1;
              }
 	} else {
-	     val = (gradient_v*PRECISION_ATAN)/gradient_h;
+	     //val = (gradient_v*PRECISION_ATAN)/gradient_h; // DIVISION ICI
+	     val = gradient_v * inverse[gradient_h];
 	     if (val >0) {
 	          for (i = N_CLASSES>>1; i > 0; i--) {
-		      if (val >= arctan[i-1] && result == 31)
+		      if (result == 31 && val >= arctan[i-1])
 			result = i;
 		  }
 	     }
-	     if (val >= -1*(arctan[0]) && result == 31) {
+	     if (result == 31 && val >= -1*(arctan[0])) {
                   result = 0;
 	     } else {
 	       for (i = -1; i > -1*(N_CLASSES>>1); i--) {
-		 if (val >= -1*(arctan[-i]) && result == 31)
+		 if (result == 31 && val >= -1*(arctan[-i]))
 		         result = i+N_CLASSES;
 		  }
-		  
+
 		  if (result == 31) {
 		      result = N_CLASSES>>1;
 		  }
