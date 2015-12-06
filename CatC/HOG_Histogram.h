@@ -30,3 +30,6 @@ void arg_pixel(ac_int<4,false> *arg,
 void arg_norme_pixel(ac_int<13,false> *res,
 		     ac_int<9,true>  gradient_v,
 		     ac_int<9,true>  gradient_h);
+
+void divide(ac_int<9,true>  gradient_h,
+	    int *result);

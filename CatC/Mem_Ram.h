@@ -43,11 +43,3 @@ static  const ac_int<8,false> patern[CELL_SIZE][CELL_SIZE] = {
   {0,17,255,118,0,84,250,9,5,231,104,0,82,255,26,0},
   {0,60,255,6,0,108,212,0,0,184,134,0,3,239,82,0}};
 
-/*#include "ac_int.h"
-
-// Initialise toutes les cases 
-void mem_Ram_Init(ac_int<8,false> v);
-
-void mem_Ram_Read(ac_int<17,false> addr, ac_int<8,false> *data);
-
-void mem_Ram_Write(ac_int<17,false> addr, ac_int<8,false> value);*/
