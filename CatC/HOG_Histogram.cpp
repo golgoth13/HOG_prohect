@@ -83,7 +83,7 @@ void arg_pixel(ac_int<4,false> *arg,
 	       ac_int<9,true>  gradient_h) {
 
   ac_int<5,false>  result = 31;
-  int i, val, val2;
+  int i, val, val2, val3 = 0;
 
   if(gradient_h == 0) {        // case of divide by 0
     if (gradient_v == 0) {
@@ -92,14 +92,17 @@ void arg_pixel(ac_int<4,false> *arg,
       result = N_CLASSES>>1;
     }
   } else {
-    divide(gradient_h,&val2);
-    val  = gradient_v *val2;
+    divide(gradient_h,&val);
+    val  = gradient_v *val;
     //DEBUT POUR DEBUG
-    val2 = (gradient_v*PRECISION_ATAN)/gradient_h;
+    /*val2 = (gradient_v*PRECISION_ATAN)/gradient_h;
     if (val != val2) {
-      cout << gradient_h << " " << gradient_v << " " 
-	   << val << " " << val2 << " " << val - val2 << endl;
-    }
+      if (gradient_h >130 || gradient_h <-130) {
+	divide(gradient_h,&val3);
+	cout << gradient_h << " " << gradient_v << " " 
+	     << val << " " << val2 << " " << val3 << endl;
+      }
+      }*/
     //FIN
     if (val >0) {
       for (i = N_CLASSES>>1; i > 0; i--) {
@@ -141,12 +144,12 @@ void arg_norme_pixel(ac_int<13,false> *res,
 void divide(ac_int<9,true>  gradient_h,
 	    int *result) {
 
-  if (gradient_h > 0 ){
+  if (gradient_h.slc<8>(0) > 0 ){
     *result = inverse[gradient_h.slc<8>(0)-1];
 
   } else {   
     *result = -1*inverse[-1*gradient_h.slc<8>(0)-1];
   }
-
+  
 }
 
