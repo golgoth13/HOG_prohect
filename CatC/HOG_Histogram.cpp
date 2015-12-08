@@ -34,14 +34,14 @@ const unsigned int mysqrt[]  = {0,1,1,2,3,4,6,8,11,16,23,32,45,64,91,128,181,
 const unsigned int arctan[]  = {25,78,137,210,312,479,844,2599};
 
 //linear approximation of division
-const unsigned int inverse[] = {256,128,85,64,51,43,37,32,28,26,23,21,20,18,17,
-				16,15,14,13,13,12,12,11,11,10,10,9,9,9,9,8,8,8,
-				8,7,7,7,7,7,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,
-				4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,3,3,3,3,
-				3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+const unsigned int inverse[] = {256,128,85,64,51,42,36,32,28,25,23,21,19,18,17,
+				16,15,14,13,12,12,11,11,10,10,9,9,9,8,8,8,8,7,
+				7,7,7,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,4,4,4,4,4,
+				4,4,4,4,4,4,4,4,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+				3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 				2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
-				2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
-				2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,
+				2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+				1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 				1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 				1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 				1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -83,7 +83,7 @@ void arg_pixel(ac_int<4,false> *arg,
 	       ac_int<9,true>  gradient_h) {
 
   ac_int<5,false>  result = 31;
-  int i, val, val2, val3 = 0;
+  int i, val, val2 = 0;
 
   if(gradient_h == 0) {        // case of divide by 0
     if (gradient_v == 0) {
@@ -97,13 +97,11 @@ void arg_pixel(ac_int<4,false> *arg,
     //DEBUT POUR DEBUG
     /*val2 = (gradient_v*PRECISION_ATAN)/gradient_h;
     if (val != val2) {
-      if (gradient_h >130 || gradient_h <-130) {
-	divide(gradient_h,&val3);
-	cout << gradient_h << " " << gradient_v << " " 
-	     << val << " " << val2 << " " << val3 << endl;
+      if (val-val2 > 100) {
+	cout << gradient_h << " " << gradient_v << " " << val-val2 << endl;
       }
-      }*/
-    //FIN
+    }
+    //FIN*/
     if (val >0) {
       for (i = N_CLASSES>>1; i > 0; i--) {
 	if (result == 31 && val >= arctan[i-1])
@@ -147,7 +145,7 @@ void divide(ac_int<9,true>  gradient_h,
   if (gradient_h.slc<8>(0) > 0 ){
     *result = inverse[gradient_h.slc<8>(0)-1];
 
-  } else {   
+  } else { 
     *result = -1*inverse[-1*gradient_h.slc<8>(0)-1];
   }
   
