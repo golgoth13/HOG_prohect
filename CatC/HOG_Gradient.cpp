@@ -22,6 +22,7 @@
 #include <iostream>
 #include "HOG_Gradient.h"
 
+
 //a virer pour la synthese
 using namespace std;
 
@@ -37,9 +38,9 @@ void gradient_ver(ac_int<9,false> coord_x,
      coord_x < (WIDTH_IMAGE-1) &&
      coord_y > 0 &&
      coord_y < HEIGHT_IMAGE-1) {
-        mem_Ram_addr = (coord_y+1)*WIDTH_IMAGE + coord_x;
+        mem_Ram_addr = (coord_y+1)*WIDTH_VGA + coord_x;
         val_b = mem_Ram_Data[mem_Ram_addr];
-        mem_Ram_addr = (coord_y-1)*WIDTH_IMAGE + coord_x;
+        mem_Ram_addr = (coord_y-1)*WIDTH_VGA + coord_x;
         val_a = mem_Ram_Data[mem_Ram_addr];
         *gradient_v = val_a  - val_b ;
 	//a virer pour la synthese
@@ -62,9 +63,9 @@ void gradient_hor(ac_int<9,false> coord_x,
      coord_x < WIDTH_IMAGE-1 &&
      coord_y > 0 &&
      coord_y < HEIGHT_IMAGE-1) {
-        mem_Ram_addr = (coord_y)*WIDTH_IMAGE + coord_x+1;
+        mem_Ram_addr = (coord_y)*WIDTH_VGA + coord_x+1;
         val_b = mem_Ram_Data[mem_Ram_addr];
-        mem_Ram_addr = (coord_y)*WIDTH_IMAGE + coord_x-1;
+        mem_Ram_addr = (coord_y)*WIDTH_VGA + coord_x-1;
         val_a = mem_Ram_Data[mem_Ram_addr];
         *gradient_h = val_b - val_a;
   } else {

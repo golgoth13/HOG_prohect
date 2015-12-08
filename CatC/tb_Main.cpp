@@ -1,14 +1,20 @@
 #include "Main_HOG.h"
 //a virer pour catapultc
-#include "Mem_Ram.h"
+//#include "Mem_Ram.h"
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
 using namespace std;
 
+#define WIDTH_IMAGE_T  320
+#define HEIGHT_IMAGE_T 240
+#define CELL_WIDTH_T   4
+#define CELL_HEIGHT_T  4
+#define CELL_SIZE_T    16
+
 //simultate input and output memory
-static ac_int<8,false> image[WIDTH_IMAGE*HEIGHT_IMAGE];
-static ac_int<8,false> hog[WIDTH_IMAGE*HEIGHT_IMAGE];
+static ac_int<8,false> image[WIDTH_IMAGE_T*HEIGHT_IMAGE_T];
+static ac_int<8,false> hog[WIDTH_IMAGE_T*HEIGHT_IMAGE_T];
 
 #include <mc_scverify.h>
 
@@ -27,10 +33,10 @@ CCS_MAIN(unsigned int argc, char *argv[])
     cout << "impossible de lire : ../../img/" << file << ".pgm" << endl;
   }
   fichier >> magic_number >> useless >> useless >> useless;
- Ram_X : for(j = 0; j < HEIGHT_IMAGE; j++) {
-  Ram_Y : for(i = 0; i < WIDTH_IMAGE; i++) {
+ Ram_X : for(j = 0; j < HEIGHT_IMAGE_T; j++) {
+  Ram_Y : for(i = 0; i < WIDTH_IMAGE_T; i++) {
       fichier >> useless;
-      image[i+WIDTH_IMAGE*j] = useless;
+      image[i+WIDTH_IMAGE_T*j] = useless;
     }
   }
   fichier.close();
@@ -45,11 +51,11 @@ CCS_MAIN(unsigned int argc, char *argv[])
     CCS_RETURN(1);
   }
   fichier_out << "P2" << endl
-	      << WIDTH_IMAGE << " " << HEIGHT_IMAGE << endl
+	      << WIDTH_IMAGE_T << " " << HEIGHT_IMAGE_T << endl
 	      << "255" << endl;
- Hog_X : for(j = 0; j < HEIGHT_IMAGE; j++) {
-  Hog_Y : for(i = 0; i < WIDTH_IMAGE; i++) {
-      fichier_out << hog[j*WIDTH_IMAGE+i] << " ";
+ Hog_X : for(j = 0; j < HEIGHT_IMAGE_T; j++) {
+  Hog_Y : for(i = 0; i < WIDTH_IMAGE_T; i++) {
+      fichier_out << hog[j*WIDTH_IMAGE_T+i] << " ";
     }
     fichier_out << endl;
   }
