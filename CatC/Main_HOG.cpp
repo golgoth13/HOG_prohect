@@ -50,11 +50,11 @@ void Main_HOG (ac_int<8,false> *mem_Ram_Data,
       for(k = 0; k < 16; k++) {
         cell[k] = 0;
       }
-           
+
     top_cell_y : for ( cell_y = y; cell_y < y+CELL_HEIGHT; cell_y++){
       top_cell_x : for ( cell_x = x; cell_x < x+CELL_WIDTH; cell_x++){
 	  gradient_pixel(cell_x, cell_y, &gradient_h, &gradient_v, mem_Ram_Data);
-	  arg_norme_pixel(&histo, gradient_h, gradient_v);
+	  arg_norme_pixel(&histo, gradient_v, gradient_h);
 
           val = histo.slc<9>(0);
 	  classe = histo.slc<4>(9);

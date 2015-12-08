@@ -19,11 +19,12 @@ CCS_MAIN(unsigned int argc, char *argv[])
   unsigned int j;
 
   //write test file in input memory
+  string file = "empire";
   string magic_number;
   int useless;
-  ifstream fichier("../../img/empire.pgm", ios::in);
+  ifstream fichier(("../../img/" + file + ".pgm").c_str(), ios::in);
   if(!fichier) {
-    cout << "impossible de lire : ../../img/empire.pgm" << endl;
+    cout << "impossible de lire : ../../img/" << file << ".pgm" << endl;
   }
   fichier >> magic_number >> useless >> useless >> useless;
  Ram_X : for(j = 0; j < HEIGHT_IMAGE; j++) {
@@ -38,9 +39,9 @@ CCS_MAIN(unsigned int argc, char *argv[])
   CCS_DESIGN(Main_HOG)(image, hog);
 
    //write output memory into output file
-  ofstream fichier_out("_histo.pgm", ios::out);
+  ofstream fichier_out((file + "_histo.pgm").c_str(), ios::out);
   if(!fichier_out) {
-    cerr << "impossible d'écrire : _histo.pgm" << endl;
+    cerr << "impossible d'écrire : " << file << "_histo.pgm" << endl;
     CCS_RETURN(1);
   }
   fichier_out << "P2" << endl
