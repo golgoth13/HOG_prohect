@@ -21,6 +21,7 @@
 
 #define WIDTH_IMAGE  320
 #define HEIGHT_IMAGE 240
+#define WIDTH_VGA    512
 #define CELL_WIDTH   4
 #define CELL_HEIGHT  4
 #define CELL_SIZE    16
