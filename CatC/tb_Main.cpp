@@ -43,7 +43,7 @@ CCS_MAIN(unsigned int argc, char *argv[])
   fichier.close();
 
   //call main program
-  CCS_DESIGN(Main_HOG)(image, hog);
+  CCS_DESIGN(Main_HOG)(image, hog,true);
 
    //write output memory into output file
   ofstream fichier_out((file + "_histo.pgm").c_str(), ios::out);

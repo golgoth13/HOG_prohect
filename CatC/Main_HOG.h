@@ -20,4 +20,5 @@
 #include "ac_int.h"
 
 void Main_HOG (ac_int<8,false> *mem_Ram_Data,
-	       ac_int<8,false> *mem_Ram_Hog);
+	       ac_int<8,false> *mem_Ram_Hog,
+	       bool            actived);
