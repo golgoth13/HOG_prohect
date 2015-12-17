@@ -21,4 +21,5 @@
 
 void Main_HOG (ac_int<8,false> *mem_Ram_Data,
 	       ac_int<8,false> *mem_Ram_Hog,
-	       bool            actived);
+	       ac_int<1,false>  actived,
+	       ac_int<1,false> *mode);

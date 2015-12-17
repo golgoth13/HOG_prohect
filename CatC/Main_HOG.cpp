@@ -35,7 +35,8 @@ using namespace std;
 
 void Main_HOG (ac_int<8,false> *mem_Ram_Data,
 	       ac_int<8,false> *mem_Ram_Hog,
-	       bool            actived) {
+	       ac_int<1,false> actived,
+	       ac_int<1,false> *mode) {
 
   ac_int<9,false>  x, cell_x;
   ac_int<8,false>  y, cell_y;
@@ -45,7 +46,10 @@ void Main_HOG (ac_int<8,false> *mem_Ram_Data,
   ac_int<17,false> mem_Hog_addr;
   unsigned int     cpt,val,classe,k;
 
-  if (actived) {
+
+  //while(true) {
+  if (actived == 1) {
+    *mode = 1;
     //traitement HOG
   top_loop_y : for (y = 0; y <= HEIGHT_IMAGE-1; y+= CELL_HEIGHT) {
     top_loop_x : for (x = 0; x <= WIDTH_IMAGE-1; x+= CELL_WIDTH) {
@@ -96,6 +100,7 @@ void Main_HOG (ac_int<8,false> *mem_Ram_Data,
     }
 
   } else {
+    *mode = 0;
     //recopie de la caméra sans traitement
   top_vid_y : for (y = 0; y <= HEIGHT_IMAGE-1; y++) {
     top_vid_x : for (x = 0; x <= WIDTH_IMAGE-1; x++) {
@@ -104,6 +109,7 @@ void Main_HOG (ac_int<8,false> *mem_Ram_Data,
       }
     }
   }
+  //}
 
 }
 
