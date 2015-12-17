@@ -30,7 +30,6 @@ static ac_int<12, false> cell[CELL_SIZE];
 #include <iostream>
 using namespace std;
 
-
 #pragma design top
 
 void Main_HOG (ac_int<8,false> *mem_Ram_Data,
@@ -49,7 +48,7 @@ void Main_HOG (ac_int<8,false> *mem_Ram_Data,
 
   //while(true) {
   if (actived == 1) {
-    *mode = 1;
+    *mode = 0;
     //traitement HOG
   top_loop_y : for (y = 0; y <= HEIGHT_IMAGE-1; y+= CELL_HEIGHT) {
     top_loop_x : for (x = 0; x <= WIDTH_IMAGE-1; x+= CELL_WIDTH) {
@@ -100,7 +99,7 @@ void Main_HOG (ac_int<8,false> *mem_Ram_Data,
     }
 
   } else {
-    *mode = 0;
+    *mode = 1;
     //recopie de la caméra sans traitement
   top_vid_y : for (y = 0; y <= HEIGHT_IMAGE-1; y++) {
     top_vid_x : for (x = 0; x <= WIDTH_IMAGE-1; x++) {
