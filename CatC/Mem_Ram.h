@@ -13,7 +13,7 @@
 // Dependencies: 
 //
 // Revision: 
-// Revision 0.01 - File Created
+// Revision 1.01 - Values for pattern
 // Additional Comments: 
 //
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,6 +22,7 @@
 #define WIDTH_IMAGE  320
 #define HEIGHT_IMAGE 240
 #define WIDTH_VGA    512
+#define HEIGHT_VGA   256
 #define CELL_WIDTH   4
 #define CELL_HEIGHT  4
 #define CELL_SIZE    16

@@ -19,6 +19,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "ac_int.h"
 
+/*for test catapult : 
+void Main_HOG (ac_int<8,false> mem_Ram_Data[WIDTH_VGA*HEIGHT_VGA],
+	       ac_int<8,false> mem_Ram_Hog[WIDTH_VGA*HEIGHT_VGA],
+	       ac_int<1,false> actived,
+	       ac_int<1,false> *mode);
+ */
 void Main_HOG (ac_int<8,false> *mem_Ram_Data,
 	       ac_int<8,false> *mem_Ram_Hog,
 	       ac_int<1,false>  actived,

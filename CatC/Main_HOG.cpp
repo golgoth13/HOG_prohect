@@ -32,6 +32,12 @@ using namespace std;
 
 #pragma design top
 
+/*for test catapult : 
+void Main_HOG (ac_int<8,false> mem_Ram_Data[WIDTH_VGA*HEIGHT_VGA],
+	       ac_int<8,false> mem_Ram_Hog[WIDTH_VGA*HEIGHT_VGA],
+	       ac_int<1,false> actived,
+	       ac_int<1,false> *mode) {
+ */
 void Main_HOG (ac_int<8,false> *mem_Ram_Data,
 	       ac_int<8,false> *mem_Ram_Hog,
 	       ac_int<1,false> actived,
@@ -50,8 +56,8 @@ void Main_HOG (ac_int<8,false> *mem_Ram_Data,
   if (actived == 1) {
     *mode = 0;
     //traitement HOG
-  top_loop_y : for (y = 0; y <= HEIGHT_IMAGE-1; y+= CELL_HEIGHT) {
-    top_loop_x : for (x = 0; x <= WIDTH_IMAGE-1; x+= CELL_WIDTH) {
+  top_loop_y : for (y = 0; y < HEIGHT_IMAGE; y+= CELL_HEIGHT) {
+    top_loop_x : for (x = 0; x < WIDTH_IMAGE; x+= CELL_WIDTH) {
 	for(k = 0; k < 16; k++) {
 	  cell[k] = 0;
 	}
@@ -101,8 +107,8 @@ void Main_HOG (ac_int<8,false> *mem_Ram_Data,
   } else {
     *mode = 1;
     //recopie de la caméra sans traitement
-  top_vid_y : for (y = 0; y <= HEIGHT_IMAGE-1; y++) {
-    top_vid_x : for (x = 0; x <= WIDTH_IMAGE-1; x++) {
+  top_vid_y : for (y = 0; y < HEIGHT_IMAGE; y++) {
+    top_vid_x : for (x = 0; x < WIDTH_IMAGE; x++) {
 	mem_Hog_addr = y*WIDTH_VGA + x;
 	mem_Ram_Hog[mem_Hog_addr] = mem_Ram_Data[mem_Hog_addr];
       }

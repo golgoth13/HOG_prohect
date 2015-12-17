@@ -1,3 +1,23 @@
+////////////////////////////////////////////////////////////////////////////////
+// Company:        ENSIMAG
+// Engineer:       Hans Julien, Perraud Frédéric
+//
+// Create Date:    08:11:44 11/10/2015
+// Design Name:
+// Module Name:    Gradient calculation
+// Project Name:   pedestre detection HLS
+// Target Devices:
+// Tool versions:
+// Description:
+//
+// Dependencies:
+//
+// Revision:
+// Revision 1.01 - File Created
+// Additional Comments:
+//
+////////////////////////////////////////////////////////////////////////////////
+
 #include "Main_HOG.h"
 //a virer pour catapultc
 //#include "Mem_Ram.h"
@@ -7,24 +27,25 @@
 using namespace std;
 
 #define WIDTH_IMAGE_T  320
-#define WIDTH_RAM_T  512
+#define WIDTH_RAM_T    512
+#define HEIGHT_RAM_T   256
 #define HEIGHT_IMAGE_T 240
 #define CELL_WIDTH_T   4
 #define CELL_HEIGHT_T  4
 #define CELL_SIZE_T    16
 
 //simultate input and output memory
-static ac_int<8,false> image[WIDTH_RAM_T*HEIGHT_IMAGE_T];
-static ac_int<8,false> hog[WIDTH_RAM_T*HEIGHT_IMAGE_T];
+static ac_int<8,false> image[WIDTH_RAM_T*HEIGHT_RAM_T];
+static ac_int<8,false> hog[WIDTH_RAM_T*HEIGHT_RAM_T];
 
 #include <mc_scverify.h>
 
 CCS_MAIN(unsigned int argc, char *argv[])
 {
 
-    unsigned int i;
-    unsigned int j;
-    unsigned int k;
+    unsigned int    i;
+    unsigned int    j;
+    ac_int<1,false> k;
 
   //write test file in input memory
   string file = "barbara3";
