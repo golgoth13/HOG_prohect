@@ -51,7 +51,7 @@ CCS_MAIN(unsigned int argc, char *argv[])
   string file = "empire";
   string magic_number;
   int useless;
-  ifstream fichier(("../../img/" + file + ".pgm").c_str(), ios::in);
+  ifstream fichier(("../../../img/" + file + ".pgm").c_str(), ios::in);
   if(!fichier) {
     cout << "impossible de lire : ../../img/" << file << ".pgm" << endl;
   }
@@ -65,7 +65,7 @@ CCS_MAIN(unsigned int argc, char *argv[])
   fichier.close();
 
   //call main program
-  CCS_DESIGN(Main_HOG)(image, hog,0,&k);
+  CCS_DESIGN(Main_HOG)(image, hog,1,&k);
 
    //write output memory into output file
   ofstream fichier_out((file + "_histo.pgm").c_str(), ios::out);

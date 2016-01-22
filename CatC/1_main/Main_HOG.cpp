@@ -18,8 +18,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 #include "Main_HOG.h"
-
-
 #define PRECISION_RACINE 18
 #define PRECISION_ATAN   256
 #define N_CLASSES        16
@@ -72,7 +70,7 @@ void norme_pixel(ac_int<9,false> *norme,
   if (two_square <= incr) {
     result = mysqrt[two_square];
   } else {
-  norm_pix : for (i = 3; i <= PRECISION_RACINE; i++) {
+    for (i = 3; i <= PRECISION_RACINE; i++) {
       if (result == 511 && two_square <= (incr<<1)) {
 	result = mysqrt[i-1] +
 	  (((mysqrt[i] - mysqrt[i-1])*(two_square - incr))>>(i-2));
@@ -116,7 +114,7 @@ void arg_pixel(ac_int<4,false> *arg,
     val  = (gradient_v *val)>>2;
     
     if (val >0) {
-    arg_pix1 : for (i = N_CLASSES>>1; i > 0; i--) {
+      for (i = N_CLASSES>>1; i > 0; i--) {
 	if (result == 31 && val >= arctan[i-1])
 	  result = i;
       }
@@ -124,7 +122,7 @@ void arg_pixel(ac_int<4,false> *arg,
     if (result == 31 && val >= -1*(arctan[0])) {
       result = 0;
     } else {
-    arg_pix2 : for (i = -1; i > -1*(N_CLASSES>>1); i--) {
+      for (i = -1; i > -1*(N_CLASSES>>1); i--) {
 	if (result == 31 && val >= -1*(arctan[-i]))
 	  result = i+N_CLASSES;
       }
@@ -223,105 +221,88 @@ void Main_HOG (ac_int<8,false> mem_Ram_Data[WIDTH_VGA*HEIGHT_VGA],
 	       ac_int<1,false> actived,
 	       ac_int<1,false> *mode) {
  
-  ac_int<9,false>  x, cell_y;
-  ac_int<10,false> cell_x;
-  ac_int<8,false>  y;
+  ac_int<9,false>  x, cell_x;
+  ac_int<8,false>  y, cell_y;
   ac_int<9,true>   gradient_h;
   ac_int<9,true>   gradient_v;
   ac_int<13,false> histo, addr_Hog_Ram;
   ac_int<17,false> mem_Hog_addr;
   unsigned int     cpt,val,classe,k;
-  ac_int<8,false> val_b, val_a;
-  ac_int<17,false> mem_Ram_addr;
-   
+
+  //cell_y = mem_Ram_Data[122];
+  //mem_Ram_Hog[122] = cell_y;
+
   //while(true) {
   if (actived == 1) {
     *mode = 0;
-    
-    //traitement HOG
-    top_loop_y : for (y = 0; y <= 251; y+= CELL_HEIGHT) {
-      top_loop_x : for (x = 0; x <= 507; x+= CELL_WIDTH) {
-	 
-	top_cell_y : for ( cell_y = 0; cell_y < CELL_HEIGHT; cell_y++){
-	  top_cell_x : for ( cell_x = 0; cell_x < CELL_WIDTH; cell_x++){
-
-	    //cell_y += y;
-	    //cell_x += x;
-	      gradient_pixel(cell_x+x,
-		cell_y+y, 
-		&gradient_h, 
-		&gradient_v, 
-		mem_Ram_Data);
-	      // if(cell_x + x > 0               &&
-	      // 	 cell_y + y < (WIDTH_IMAGE-1) &&
-	      // 		  cell_y + y > 0    &&
-	      // 	cell_x + x < HEIGHT_IMAGE-1) {
-
-	      // 	mem_Ram_addr = (cell_y+1+y)*WIDTH_VGA + cell_x+x;
-	      // 	val_b        = mem_Ram_Data[mem_Ram_addr];
-	      // 	mem_Ram_addr = (cell_y-1+y)*WIDTH_VGA + cell_x+x;
-	      // 	val_a        = mem_Ram_Data[mem_Ram_addr];
-	      // 	gradient_v  = val_a  - val_b ;
-
-	      // 	mem_Ram_addr = (cell_y+y)*WIDTH_VGA + cell_x+1+x;
-	      // 	val_b        = mem_Ram_Data[mem_Ram_addr];
-	      // 	mem_Ram_addr = (cell_y+y)*WIDTH_VGA + cell_x-1+x;
-	      // 	val_a        = mem_Ram_Data[mem_Ram_addr];
-	      // 	gradient_h  = val_b - val_a;
-
-	      // } else {
-	      // 	gradient_v = 0;
-	      // 	gradient_h = 0;
-	      // }
-
-
-	      arg_norme_pixel(&histo, gradient_v, gradient_h);
-
-	      val           = histo.slc<9>(0);
-	      classe        = histo.slc<4>(9);
-	      cell[classe] += val;
-
-	    }
-	  }
-
-	  //vote
-	  val = 0;
-	  classe = 0;
-	top_cell_f : for(k = 0; k < 16; k++) {
-	    if (cell[k] >= val) {
-	      val    = cell[k];
-	      classe = k;
-	    }
-	  }
-
-	  cpt = 0;
-	  if (val > 1024)
-	    val = 1024;
-
-	  //write result with normalisation
-	top_hog_y : for ( cell_y = 0; cell_y < CELL_HEIGHT; cell_y++){
-	  top_hog_x : for ( cell_x = 0; cell_x < CELL_WIDTH; cell_x++){
-	      mem_Hog_addr = (cell_y+y)*WIDTH_VGA + cell_x+x;
-	      mem_Ram_Hog[mem_Hog_addr] = ((val*patern[classe][cpt])>>10).slc<8>(0); // %1024
-	      cpt++;
-	    }
-	  }
-
-	}
+    top_vid_y2 : for (y = 0; y < HEIGHT_IMAGE; y++) {
+    top_vid_x2 : for (x = 0; x < WIDTH_IMAGE; x++) {
+	mem_Hog_addr = y*WIDTH_IMAGE + x;
+	mem_Ram_Hog[mem_Hog_addr] = mem_Ram_Data[mem_Hog_addr];
       }
+    }
 
+    //traitement HOG
+  top_loop_y : for (y = 0; y < HEIGHT_VGA; y+= CELL_HEIGHT) {
+    top_loop_x : for (x = 0; x < WIDTH_VGA; x+= CELL_WIDTH) {
+	for(k = 0; k < 16; k++) {
+	  cell[k] = 0;
+	}
 
+      top_cell_y : for ( cell_y = y; cell_y < y+CELL_HEIGHT; cell_y++){
+	top_cell_x : for ( cell_x = x; cell_x < x+CELL_WIDTH; cell_x++){
+	    gradient_pixel(cell_x,
+			   cell_y, 
+			   &gradient_h, 
+			   &gradient_v, 
+			   mem_Ram_Data);
+	    arg_norme_pixel(&histo, gradient_v, gradient_h);
+
+	    val           = histo.slc<9>(0);
+	    classe        = histo.slc<4>(9);
+	    cell[classe] += val;
+
+	  }
+	}
+
+	//vote
+	val = 0;
+	classe = 0;
+	for(k = 0; k < 16; k++) {
+	  if (cell[k] >= val) {
+	    val    = cell[k];
+	    classe = k;
+	  }
+	}
+
+	cpt = 0;
+	if (val > 1024)
+	  val = 1024;
+
+	//write result with normalisation
+      top_hog_y : for ( cell_y = y; cell_y < y+CELL_HEIGHT; cell_y++){
+	top_hog_x : for ( cell_x = x; cell_x < x+CELL_WIDTH; cell_x++){
+	    mem_Hog_addr = (cell_y)*WIDTH_VGA + cell_x;
+	    mem_Ram_Hog[mem_Hog_addr] = (val*patern[classe][cpt])>>10; // %1024
+	    cpt++;
+	  }
+	}
+
+      }
+    }
 
   } else {
     *mode = 1;
     //recopie de la caméra sans traitement
-    top_vid_y : for (y = 0; y < 255; y++) {
-      top_vid_x : for (x = 0; x < 511; x++) {
-	  mem_Hog_addr = y*WIDTH_VGA + x;
-	  mem_Ram_Hog[mem_Hog_addr] = mem_Ram_Data[mem_Hog_addr];
-	}
+  top_vid_y : for (y = 0; y < HEIGHT_VGA; y++) {
+    top_vid_x : for (x = 0; x < WIDTH_VGA; x++) {
+	mem_Hog_addr = y*WIDTH_VGA + x;
+	mem_Ram_Hog[mem_Hog_addr] = mem_Ram_Data[mem_Hog_addr];
       }
     }
+    
+  }
+  //}
 
 }
 

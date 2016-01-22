@@ -1,9 +1,11 @@
 -------------------------------------------------------------------------------
--- system_top.vhd 
+-- system_top.vhd
 -------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.all;
+--use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
@@ -11,193 +13,279 @@ use UNISIM.VCOMPONENTS.ALL;
 library work;
 use work.packageVGA.all;
 
+
 entity system_top is
-  Port ( processing_system7_0_MIO :          inout std_logic_vector (53 downto 0);
-         processing_system7_0_PS_SRSTB :     in    std_logic;
-         processing_system7_0_PS_CLK :       in    std_logic;
-         processing_system7_0_PS_PORB :      in    std_logic;
-         processing_system7_0_DDR_Clk :      inout std_logic;
-         processing_system7_0_DDR_Clk_n :    inout std_logic;
-         processing_system7_0_DDR_CKE :      inout std_logic;
-         processing_system7_0_DDR_CS_n :     inout std_logic;
-         processing_system7_0_DDR_RAS_n :    inout std_logic;
-         processing_system7_0_DDR_CAS_n :    inout std_logic;
-         processing_system7_0_DDR_WEB :      out   std_logic;
-         processing_system7_0_DDR_BankAddr : inout std_logic_vector (2  downto 0);
-         processing_system7_0_DDR_Addr :     inout std_logic_vector (14 downto 0);
-         processing_system7_0_DDR_ODT :      inout std_logic;
-         processing_system7_0_DDR_DRSTB :    inout std_logic;
-         processing_system7_0_DDR_DQ :       inout std_logic_vector (31 downto 0);
-         processing_system7_0_DDR_DM :       inout std_logic_vector (3  downto 0);
-         processing_system7_0_DDR_DQS :      inout std_logic_vector (3  downto 0);
-         processing_system7_0_DDR_DQS_n :    inout std_logic_vector (3  downto 0);
-         processing_system7_0_DDR_VRN :      inout std_logic;
-         processing_system7_0_DDR_VRP :      inout std_logic;
-         processing_system7_0_I2C0_SDA :     inout std_logic;
-         processing_system7_0_I2C0_SCL :     inout std_logic;
-         led_io :                            inout std_logic_vector (3  downto 0);
-         push_io :                           in    std_logic_vector (3  downto 0);
-         switch_io :                         in    std_logic_vector (3  downto 0);
-         clk :                               in    std_logic;
-         RED :                               out   std_logic_vector (4  downto 0);
-         GREEN :                             out   std_logic_vector (5  downto 0);
-         BLUE :                              out   std_logic_vector (4  downto 0);
-         VGA_VS :                            out   std_logic;
-         VGA_HS :                            out   std_logic;
-         CAMERA_DATA :                       in    std_logic_vector (7  downto 0);
-         CAMERA_XCLK :                       out   std_logic;
-         CAMERA_PCLK :                       in    std_logic;
-         CAMERA_HS :                         in    std_logic;
-         CAMERA_VS :                         in    std_logic);
+  Port ( processing_system7_0_MIO : inout std_logic_vector(53 downto 0);
+         processing_system7_0_PS_SRSTB : in std_logic;
+         processing_system7_0_PS_CLK : in std_logic;
+         processing_system7_0_PS_PORB : in std_logic;
+         processing_system7_0_DDR_Clk : inout std_logic;
+         processing_system7_0_DDR_Clk_n : inout std_logic;
+         processing_system7_0_DDR_CKE : inout std_logic;
+         processing_system7_0_DDR_CS_n : inout std_logic;
+         processing_system7_0_DDR_RAS_n : inout std_logic;
+         processing_system7_0_DDR_CAS_n : inout std_logic;
+         processing_system7_0_DDR_WEB : out std_logic;
+         processing_system7_0_DDR_BankAddr : inout std_logic_vector(2 downto 0);
+         processing_system7_0_DDR_Addr : inout std_logic_vector(14 downto 0);
+         processing_system7_0_DDR_ODT : inout std_logic;
+         processing_system7_0_DDR_DRSTB : inout std_logic;
+         processing_system7_0_DDR_DQ : inout std_logic_vector(31 downto 0);
+         processing_system7_0_DDR_DM : inout std_logic_vector(3 downto 0);
+         processing_system7_0_DDR_DQS : inout std_logic_vector(3 downto 0);
+         processing_system7_0_DDR_DQS_n : inout std_logic_vector(3 downto 0);
+         processing_system7_0_DDR_VRN : inout std_logic;
+         processing_system7_0_DDR_VRP : inout std_logic;
+         processing_system7_0_I2C0_SDA : inout std_logic;
+         processing_system7_0_I2C0_SCL : inout std_logic;
+         led_io : inout std_logic_vector(3 downto 0);
+         push_io : in std_logic_vector(3 downto 0);
+         switch_io : in std_logic_vector(3 downto 0);
+         clk : in std_logic;
+         RED : out std_logic_vector(4 downto 0);
+         GREEN : out std_logic_vector(5 downto 0);
+         BLUE : out std_logic_vector(4 downto 0);
+         VGA_VS : out std_logic;
+         VGA_HS : out std_logic;
+         CAMERA_DATA : in std_logic_vector(7 downto 0);
+         --CAMERA_PWREN : out std_logic;
+         --CAMERA_RST : out std_logic;
+         --CAMERA_SCL : inout std_logic;
+         --CAMERA_SDA : inout std_logic;		
+         CAMERA_XCLK : out std_logic;
+         CAMERA_PCLK : in std_logic;
+         CAMERA_HS : in std_logic;
+         CAMERA_VS : in std_logic
+         );
 end system_top;
 
 architecture STRUCTURE of system_top is
 
   component system is
-    Port ( processing_system7_0_MIO :          inout std_logic_vector (53 downto 0);
-           processing_system7_0_PS_SRSTB :     in    std_logic;
-           processing_system7_0_PS_CLK :       in    std_logic;
-           processing_system7_0_PS_PORB :      in    std_logic;
-           processing_system7_0_DDR_Clk :      inout std_logic;
-           processing_system7_0_DDR_Clk_n :    inout std_logic;
-           processing_system7_0_DDR_CKE :      inout std_logic;
-           processing_system7_0_DDR_CS_n :     inout std_logic;
-           processing_system7_0_DDR_RAS_n :    inout std_logic;
-           processing_system7_0_DDR_CAS_n :    inout std_logic;
-           processing_system7_0_DDR_WEB :      out   std_logic;
-           processing_system7_0_DDR_BankAddr : inout std_logic_vector (2  downto 0);
-           processing_system7_0_DDR_Addr :     inout std_logic_vector (14 downto 0);
-           processing_system7_0_DDR_ODT :      inout std_logic;
-           processing_system7_0_DDR_DRSTB :    inout std_logic;
-           processing_system7_0_DDR_DQ :       inout std_logic_vector (31 downto 0);
-           processing_system7_0_DDR_DM :       inout std_logic_vector (3  downto 0);
-           processing_system7_0_DDR_DQS :      inout std_logic_vector (3  downto 0);
-           processing_system7_0_DDR_DQS_n :    inout std_logic_vector (3  downto 0);
-           processing_system7_0_DDR_VRN :      inout std_logic;
-           processing_system7_0_DDR_VRP :      inout std_logic;
-           processing_system7_0_I2C0_SDA :     inout std_logic;
-           processing_system7_0_I2C0_SCL :     inout std_logic);
+    Port ( processing_system7_0_MIO : inout std_logic_vector(53 downto 0);
+           processing_system7_0_PS_SRSTB : in std_logic;
+           processing_system7_0_PS_CLK : in std_logic;
+           processing_system7_0_PS_PORB : in std_logic;
+           processing_system7_0_DDR_Clk : inout std_logic;
+           processing_system7_0_DDR_Clk_n : inout std_logic;
+           processing_system7_0_DDR_CKE : inout std_logic;
+           processing_system7_0_DDR_CS_n : inout std_logic;
+           processing_system7_0_DDR_RAS_n : inout std_logic;
+           processing_system7_0_DDR_CAS_n : inout std_logic;
+           processing_system7_0_DDR_WEB : out std_logic;
+           processing_system7_0_DDR_BankAddr : inout std_logic_vector(2 downto 0);
+           processing_system7_0_DDR_Addr : inout std_logic_vector(14 downto 0);
+           processing_system7_0_DDR_ODT : inout std_logic;
+           processing_system7_0_DDR_DRSTB : inout std_logic;
+           processing_system7_0_DDR_DQ : inout std_logic_vector(31 downto 0);
+           processing_system7_0_DDR_DM : inout std_logic_vector(3 downto 0);
+           processing_system7_0_DDR_DQS : inout std_logic_vector(3 downto 0);
+           processing_system7_0_DDR_DQS_n : inout std_logic_vector(3 downto 0);
+           processing_system7_0_DDR_VRN : inout std_logic;
+           processing_system7_0_DDR_VRP : inout std_logic;
+           processing_system7_0_I2C0_SDA : inout std_logic;
+           processing_system7_0_I2C0_SCL : inout std_logic);
   end component system;
 
-  attribute BOX_TYPE           : STRING;
+  attribute BOX_TYPE : STRING;
   attribute BOX_TYPE of system : component is "user_black_box";
   
   component clk_pll
-    Port ( CLK_IN1 :  in  std_logic;
-           CLK_OUT1 : out std_logic;
-           CLK_OUT2 : out std_logic;
-           RESET :    in  std_logic;
-           LOCKED :   out std_logic);
+    Port ( CLK_IN1  : in STD_LOGIC;
+           CLK_OUT1 : out STD_LOGIC;
+           CLK_OUT2 : out STD_LOGIC;
+           RESET    : in STD_LOGIC;
+           LOCKED   : out STD_LOGIC);
   end component clk_pll;
 
+--component Camera_Data_Simu
+--    Port ( pclk : in STD_LOGIC;
+--			  href : out STD_LOGIC;
+--         vs : out STD_LOGIC;
+--         data_out : out STD_LOGIC_VECTOR (7 downto 0));
+--end component Camera_Data_Simu;
+
   component VGA_generator
-    Port ( clk :        in  std_logic;
-           btn3 :       in  std_logic;
-           Hsync :      out std_logic;
-           Vsync :      out std_logic;
-           addr :       out std_logic_vector (16 downto 0);
-           coord :      out coordonnee;
+    Port ( clk        : in STD_LOGIC;
+           btn3       : in STD_LOGIC;								
+           Hsync      : out STD_LOGIC;
+           Vsync      : out STD_LOGIC;
+           addr       : out STD_LOGIC_VECTOR (16 downto 0);
+           coord      : out coordonnee;
            activeArea : out boolean;
-           reset :      out std_logic);
+           reset      : out STD_LOGIC);
   end component VGA_generator;
 
   component Camera_Capture
-    Port ( pclk :     in  std_logic;
-    	   reset :    in  std_logic;
-           href :     in  std_logic;
-           vs_cam :   in  std_logic;
-           data_in :  in  std_logic_vector (7  downto 0);
-           addr :     out std_logic_vector (16 downto 0);
-           data_out : out std_logic_vector (15 downto 0);
-           coord :    out coordonnee;
-           we :       out std_logic_vector (0  downto 0));
+    Port ( pclk     : in STD_LOGIC;
+    	   reset    : in STD_LOGIC;
+           href     : in STD_LOGIC;
+           vs_cam   : in STD_LOGIC;
+           data_in  : in STD_LOGIC_VECTOR (7 downto 0);
+           addr     : out STD_LOGIC_VECTOR (16 downto 0);
+           data_out : out STD_LOGIC_VECTOR (15 downto 0);
+           coord    : out coordonnee;
+           we       : out STD_LOGIC_VECTOR(0 DOWNTO 0));
   end component Camera_Capture;
 
-  --memoire image
   component mem_lum
-    Port ( clka :  in  std_logic;
-           wea :   in  std_logic_vector (0  downto 0);
+    Port ( clka  :  in  std_logic;
+           wea   :   in  std_logic_vector (0  downto 0);
            addra : in  std_logic_vector (16 downto 0);
-           dina :  in  std_logic_vector (7  downto 0);
-           clkb :  in  std_logic;
+           dina  :  in  std_logic_vector (7  downto 0);
+           clkb  :  in  std_logic;
            addrb : in  std_logic_vector (16 downto 0);
            doutb : out std_logic_vector (7  downto 0));
   end component mem_lum;
 
-  --memoire sortie
-  component mem_hog
-    Port ( clka :  in  std_logic;
-           wea :   in  std_logic_vector (0  downto 0);
-           addra : in  std_logic_vector (16 downto 0);
-           dina :  in  std_logic_vector (7  downto 0);
-           clkb :  in  std_logic;
-           addrb : in  std_logic_vector (16 downto 0);
-           doutb : out std_logic_vector (7  downto 0));
-  end component mem_hog;
-
-  --main
-  component Main_HOG
-    PORT( actived_rsc_z :                        in  std_logic;
-          clk :                                  in  std_logic;
-          rst :                                  in  std_logic;
-          mode_rsc_z :                           out std_logic;
-          mem_Ram_Data_rsc_singleport_data_in :  out std_logic_vector (7  downto 0);
-          mem_Ram_Data_rsc_singleport_addr :     out std_logic_vector (16 downto 0);
-          mem_Ram_Data_rsc_singleport_re :       out std_logic;
-          mem_Ram_Data_rsc_singleport_we :       out std_logic;
-          mem_Ram_Data_rsc_singleport_data_out : in  std_logic_vector (7  downto 0);
-          mem_Ram_Hog_rsc_singleport_data_in :   out std_logic_vector (7  downto 0);
-          mem_Ram_Hog_rsc_singleport_addr :      out std_logic_vector (16 downto 0);
-          mem_Ram_Hog_rsc_singleport_re :        out std_logic;
-          mem_Ram_Hog_rsc_singleport_we :        out std_logic;
-          mem_Ram_Hog_rsc_singleport_data_out :  in  std_logic_vector (7  downto 0));
-  end component Main_HOG;
-  
-
   component multiplexer_RGB is
-    Port ( clk :        in  std_logic;
-           sw0 :        in  std_logic;	
-           btn0 :       in  std_logic;					
-           btn1 :       in  std_logic;
-           btn2 :       in  std_logic;
-           coord :      in  coordonnee;
-           data  :      in  std_logic_vector (15 downto 0);
-           activeArea : in  boolean;
-           Hsync :      in  std_logic;
-           Vsync :      in  std_logic;
-           VGA_hs :     out std_logic;
-           VGA_vs :     out std_logic;
-           VGA_r :      out std_logic_vector (4  downto 0);
-           VGA_g :      out std_logic_vector (5  downto 0);
-           VGA_b :      out std_logic_vector (4  downto 0));
+    Port ( clk        : in STD_LOGIC;
+           sw0        : in STD_LOGIC;	
+           btn0       : in STD_LOGIC;					
+           btn1       : in STD_LOGIC;
+           btn2       : in STD_LOGIC;
+           coord      : in coordonnee;
+           data       : in STD_LOGIC_VECTOR (15 downto 0);
+           activeArea : in boolean;
+           Hsync      : in STD_LOGIC;
+           Vsync      : in STD_LOGIC;
+           VGA_hs     : out STD_LOGIC;
+           VGA_vs     : out STD_LOGIC;
+           VGA_r      : out STD_LOGIC_VECTOR (4 downto 0);
+           VGA_g      : out STD_LOGIC_VECTOR (5 downto 0);
+           VGA_b      : out STD_LOGIC_VECTOR (4 downto 0));
   end component multiplexer_RGB;
 
-  signal clk_VGA            : std_logic; 
-  signal we                 : std_logic_vector (0  downto 0);
-  signal we_h               : std_logic_vector (0  downto 0);
-  signal address_cam        : std_logic_vector (16 downto 0);
-  signal address_VGA        : std_logic_vector (16 downto 0);
-  signal address_mem_lum    : std_logic_vector (16 downto 0);
-  signal address_mem_hog    : std_logic_vector (16 downto 0);
-  signal data_cam, data_VGA : std_logic_vector (15 downto 0);
-  signal data_cam_8         : std_logic_vector (7  downto 0);
-  signal data_VGA_8         : std_logic_vector (7  downto 0);
-  signal data_lum           : std_logic_vector (7  downto 0);
-  signal data_hog           : std_logic_vector (7  downto 0);
-  signal coord_VGA          : coordonnee;
-  signal coord_cam          : coordonnee;
-  signal img_active         : boolean;
-  signal hs                 : std_logic;
-  signal vs                 : std_logic; 
-  signal rst_VGA            : std_logic; 
-  signal CAMERA_DATA_q      : std_logic_vector (7  downto 0);
-  signal CAMERA_HS_q        : std_logic;
-  signal CAMERA_VS_q        : std_logic;
 
+  component Main_HOG
+    PORT( start : IN STD_LOGIC;
+          done : OUT STD_LOGIC;
+          actived_rsc_z : IN STD_LOGIC;
+          mode_rsc_z : OUT STD_LOGIC;
+          actived_triosy_lz : OUT STD_LOGIC;
+          mode_triosy_lz : OUT STD_LOGIC;
+          mem_Ram_Data_triosy_lz : OUT STD_LOGIC;
+          mem_Ram_Hog_triosy_lz : OUT STD_LOGIC;
+          clk : IN STD_LOGIC;
+          rst : IN STD_LOGIC;
+          mem_Ram_Data_rsc_singleport_data_in : OUT STD_LOGIC_VECTOR (7 DOWNTO 0);
+          mem_Ram_Data_rsc_singleport_addr : OUT STD_LOGIC_VECTOR (16 DOWNTO 0);
+          mem_Ram_Data_rsc_singleport_re : OUT STD_LOGIC;
+          mem_Ram_Data_rsc_singleport_we : OUT STD_LOGIC;
+          mem_Ram_Data_rsc_singleport_data_out : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+          mem_Ram_Hog_rsc_singleport_data_in : OUT STD_LOGIC_VECTOR (7 DOWNTO 0);
+          mem_Ram_Hog_rsc_singleport_addr : OUT STD_LOGIC_VECTOR (16 DOWNTO 0);
+          mem_Ram_Hog_rsc_singleport_re : OUT STD_LOGIC;
+          mem_Ram_Hog_rsc_singleport_we : OUT STD_LOGIC;
+          mem_Ram_Hog_rsc_singleport_data_out : IN STD_LOGIC_VECTOR (7 DOWNTO 0)
+          );
+  end component;
+
+  signal clk_VGA, pclk_cam : STD_LOGIC; 
+  signal we,we_hog, we_hog_not : STD_LOGIC_VECTOR(0 DOWNTO 0);
+  signal address_cam, address_VGA,address_hog_in, address_hog_out, addr_switch : STD_LOGIC_VECTOR (16 downto 0);
+  signal  address_cam_tmp, address_hog_in_tmp, address_hog_out_tmp, address_VGA_tmp : STD_LOGIC_VECTOR (16 downto 0);
+  signal data_cam, data_VGA : STD_LOGIC_VECTOR (15 downto 0);
+  signal coord_VGA, coord_cam : coordonnee;
+  signal img_active : boolean;
+  signal hs, vs : STD_LOGIC; 
+  signal rst_VGA : STD_LOGIC; 
+  signal CAMERA_DATA_q : STD_LOGIC_VECTOR (7 downto 0);
+  signal CAMERA_HS_q, CAMERA_VS_q : STD_LOGIC;
+  signal data_cam_8,data_hog_in,data_switch : std_logic_vector (7  downto 0);
+  signal data_VGA_8,data_hog_out,data_hog_out_tmp,data_VGA_8s,data_hog_ins : std_logic_vector (7  downto 0);
+
+  signal start, done : std_logic;
+  
+  -- purpose: map addr
+  function map_addr (
+    addr : std_logic_vector(16 downto 0) )
+    return std_logic_vector is
+    
+    variable x,y      : integer range 0 to 1024;
+    variable addr_res : integer range 0 to 2**17-1;
+    variable res      : std_logic_vector(16 downto 0);
+    
+  begin  -- map_addr
+    -- recupere les coord
+    x        := to_integer(unsigned(addr(8 downto 0)));
+    y        := to_integer(unsigned(addr(16 downto 9)));
+    addr_res := x+320*y;
+    res      := std_logic_vector(to_unsigned(addr_res,17));
+    return res;
+  end map_addr;
+  
 begin
 
-  led_io(3) <= '1';
+  system_i: system
+    Port map ( processing_system7_0_MIO => processing_system7_0_MIO,
+               processing_system7_0_PS_SRSTB => processing_system7_0_PS_SRSTB,
+               processing_system7_0_PS_CLK => processing_system7_0_PS_CLK,
+               processing_system7_0_PS_PORB => processing_system7_0_PS_PORB,
+               processing_system7_0_DDR_Clk => processing_system7_0_DDR_Clk,
+               processing_system7_0_DDR_Clk_n => processing_system7_0_DDR_Clk_n,
+               processing_system7_0_DDR_CKE => processing_system7_0_DDR_CKE,
+               processing_system7_0_DDR_CS_n => processing_system7_0_DDR_CS_n,
+               processing_system7_0_DDR_RAS_n => processing_system7_0_DDR_RAS_n,
+               processing_system7_0_DDR_CAS_n => processing_system7_0_DDR_CAS_n,
+               processing_system7_0_DDR_WEB => processing_system7_0_DDR_WEB,
+               processing_system7_0_DDR_BankAddr => processing_system7_0_DDR_BankAddr,
+               processing_system7_0_DDR_Addr => processing_system7_0_DDR_Addr,
+               processing_system7_0_DDR_ODT => processing_system7_0_DDR_ODT,
+               processing_system7_0_DDR_DRSTB => processing_system7_0_DDR_DRSTB,
+               processing_system7_0_DDR_DQ => processing_system7_0_DDR_DQ,
+               processing_system7_0_DDR_DM => processing_system7_0_DDR_DM,
+               processing_system7_0_DDR_DQS => processing_system7_0_DDR_DQS,
+               processing_system7_0_DDR_DQS_n => processing_system7_0_DDR_DQS_n,
+               processing_system7_0_DDR_VRN => processing_system7_0_DDR_VRN,
+               processing_system7_0_DDR_VRP => processing_system7_0_DDR_VRP,
+               processing_system7_0_I2C0_SDA => processing_system7_0_I2C0_SDA,
+               processing_system7_0_I2C0_SCL => processing_system7_0_I2C0_SCL
+               );
+
+  pll: clk_pll
+    Port map ( CLK_IN1  => clk,	 -- 125 MHz
+               CLK_OUT1 => clk_VGA,		 -- 24 MHz
+               CLK_OUT2 => CAMERA_XCLK, -- 24 MHz
+               RESET    => push_io(3),
+               LOCKED   => led_io(0)
+               );
+
+  --led_io(2) <= '0';
+  --led_io(3) <= '1';
   
+--cam_clk_buf : IBUFG
+--	Port map
+--   (O => pclk_cam,
+--    I => CAMERA_PCLK);
+  
+--cam_simu: Camera_Data_Simu
+--    Port map ( pclk => pclk_cam,
+--			    href => CAMERA_HS,
+--           vs => CAMERA_VS,
+--           data_out => CAMERA_DATA
+--			    );
+
+  vga: VGA_generator
+    Port map ( clk        => clk_VGA,
+               btn3       => push_io(3),
+               Hsync      => hs,
+               Vsync      => vs,
+               addr       => address_VGA,
+               coord      => coord_VGA,
+               activeArea => img_active,
+               reset      => rst_VGA
+               );
+
+  sync_cam : process(CAMERA_PCLK)
+  begin
+    if rising_edge(CAMERA_PCLK) then
+      CAMERA_DATA_q <= CAMERA_DATA ;
+      CAMERA_HS_q   <= CAMERA_HS;
+      CAMERA_VS_q   <= CAMERA_VS;
+    end if;
+  end process sync_cam;
+
   rgb_to_gray : process(data_cam)
   begin
     data_cam_8 <= ("000" & data_cam(15 downto 11)) +
@@ -210,60 +298,10 @@ begin
     data_VGA   <= data_VGA_8(6 downto 2) &
                   data_VGA_8(6 downto 1) &
                   data_VGA_8(6 downto 2);
+    --data_VGA   <= data_VGA_8 &
+    --              data_VGA_8;
   end process gray_to_rgb;
   
-  system_i: system
-    Port map ( processing_system7_0_MIO          => processing_system7_0_MIO,
-               processing_system7_0_PS_SRSTB     => processing_system7_0_PS_SRSTB,
-               processing_system7_0_PS_CLK       => processing_system7_0_PS_CLK,
-               processing_system7_0_PS_PORB      => processing_system7_0_PS_PORB,
-               processing_system7_0_DDR_Clk      => processing_system7_0_DDR_Clk,
-               processing_system7_0_DDR_Clk_n    => processing_system7_0_DDR_Clk_n,
-               processing_system7_0_DDR_CKE      => processing_system7_0_DDR_CKE,
-               processing_system7_0_DDR_CS_n     => processing_system7_0_DDR_CS_n,
-               processing_system7_0_DDR_RAS_n    => processing_system7_0_DDR_RAS_n,
-               processing_system7_0_DDR_CAS_n    => processing_system7_0_DDR_CAS_n,
-               processing_system7_0_DDR_WEB      => processing_system7_0_DDR_WEB,
-               processing_system7_0_DDR_BankAddr => processing_system7_0_DDR_BankAddr,
-               processing_system7_0_DDR_Addr     => processing_system7_0_DDR_Addr,
-               processing_system7_0_DDR_ODT      => processing_system7_0_DDR_ODT,
-               processing_system7_0_DDR_DRSTB    => processing_system7_0_DDR_DRSTB,
-               processing_system7_0_DDR_DQ       => processing_system7_0_DDR_DQ,
-               processing_system7_0_DDR_DM       => processing_system7_0_DDR_DM,
-               processing_system7_0_DDR_DQS      => processing_system7_0_DDR_DQS,
-               processing_system7_0_DDR_DQS_n    => processing_system7_0_DDR_DQS_n,
-               processing_system7_0_DDR_VRN      => processing_system7_0_DDR_VRN,
-               processing_system7_0_DDR_VRP      => processing_system7_0_DDR_VRP,
-               processing_system7_0_I2C0_SDA     => processing_system7_0_I2C0_SDA,
-               processing_system7_0_I2C0_SCL     => processing_system7_0_I2C0_SCL );
-
-  pll: clk_pll
-    Port map ( CLK_IN1  => clk,	        -- 125 MHz
-               CLK_OUT1 => clk_VGA,	-- 24 MHz
-               CLK_OUT2 => CAMERA_XCLK, -- 24 MHz
-               RESET    => push_io(3),
-               LOCKED   => led_io(0) );
-  
-
-  sync_cam : process(CAMERA_PCLK)
-  begin
-    if rising_edge(CAMERA_PCLK) then
-      CAMERA_DATA_q  <= CAMERA_DATA ;
-      CAMERA_HS_q    <= CAMERA_HS;
-      CAMERA_VS_q    <= CAMERA_VS;
-    end if;
-  end process sync_cam;
-  
-  vga: VGA_generator
-    Port map ( clk        => clk_VGA,
-               btn3       => push_io(3),
-               Hsync      => hs,
-               Vsync      => vs,
-               addr       => address_VGA,
-               coord      => coord_VGA,
-               activeArea => img_active,
-               reset      => rst_VGA );
-
   capture: Camera_Capture
     Port map ( pclk     => CAMERA_PCLK,
                reset    => rst_VGA,
@@ -273,44 +311,60 @@ begin
                addr     => address_cam,
                data_out => data_cam,
                coord    => coord_cam,
-               we       => we );
+               we       => we
+               );
   
+  address_cam_tmp     <= map_addr(address_cam);
+  address_hog_in_tmp  <= map_addr(address_hog_in);
+  address_hog_out_tmp <= map_addr(address_hog_out);
+  address_VGA_tmp     <= map_addr(address_VGA);
+  data_hog_out_tmp    <= data_hog_out(7 downto 0);
+  we_hog_not          <= not(we_hog);
+  --data_hog_out_tmp <=  address_hog_out(11 downto 9) &address_hog_out(4 downto 0) ;
+
   ram1: mem_lum
     Port map ( clka  => CAMERA_PCLK,
                wea   => we,
-               addra => address_cam,
+               addra => address_cam_tmp,
                dina  => data_cam_8,
-               clkb  => CAMERA_PCLK, --clk_VGA,
-               addrb => address_mem_lum,
-               doutb => data_lum
-               );
-
-  ram2: mem_hog
-    Port map ( clka  => CAMERA_PCLK, --clk_VGA,
-               wea   => we_h,
-               addra => address_mem_hog,
-               dina  => data_hog,
+               
                clkb  => clk_VGA,
-               addrb => address_VGA,
-               doutb => data_VGA_8
+               addrb => addr_switch, --address_hog_in_tmp,
+               doutb => data_switch--data_hog_in				
+               );
+  
+  ram2: mem_lum
+    Port map ( clka  => clk_VGA,
+               wea   => we_hog_not,
+               addra => address_hog_out_tmp,
+               dina  => data_hog_out_tmp,
+               
+               clkb  => clk_VGA,
+               addrb => address_VGA_tmp,
+               doutb => data_VGA_8s
                );
 
   
-  main: Main_HOG
-    Port map( actived_rsc_z                        => switch_io(1), 
-              clk                                  => clk_VGA,
-              rst                                  => rst_VGA,
-              mode_rsc_z                           => led_io(1),
-              mem_Ram_Data_rsc_singleport_data_in  => open,
-              mem_Ram_Data_rsc_singleport_addr     => address_mem_lum,
-              mem_Ram_Data_rsc_singleport_re       => open,
-              mem_Ram_Data_rsc_singleport_we       => open,
-              mem_Ram_Data_rsc_singleport_data_out => data_lum,
-              mem_Ram_Hog_rsc_singleport_data_in   => data_hog,
-              mem_Ram_Hog_rsc_singleport_re        => open,
-              mem_Ram_Hog_rsc_singleport_addr      => address_mem_hog,
-              mem_Ram_Hog_rsc_singleport_data_out  => "00000000",
-              mem_Ram_Hog_rsc_singleport_we        =>  we_h(0) );
+  mem_mux : process(switch_io,
+                   address_hog_in_tmp,
+                    address_VGA_tmp,
+                    data_switch, data_VGA_8s
+                   )
+  begin
+    data_hog_in <= data_switch;
+    -- data_hog_in <= address_hog_in_tmp(5 downto 0) & "00";
+    if (switch_io(2) = '1') then
+      led_io(2)   <= '1';
+      addr_switch <= address_VGA_tmp;
+      data_VGA_8  <= data_switch;
+    else
+      led_io(2)   <= '0';
+      addr_switch <= address_hog_in_tmp;
+      data_VGA_8  <= data_VGA_8s;
+    end if;
+
+  end process mem_mux;
+  
   
   mux: multiplexer_RGB
     Port map ( clk        => clk_VGA,
@@ -327,7 +381,74 @@ begin
                VGA_vs     => VGA_VS,
                VGA_r      => RED,
                VGA_g      => GREEN,
-               VGA_b      => BLUE );
+               VGA_b      => BLUE
+               );
+
+  fsm_stat : process(clk_VGA)
+    type T_fsm is ( S_Idle,  S_start, S_done);
+    variable fsm_state : T_fsm;
+    
+  begin
+    if rising_edge(clk_VGA) then
+      if rst_VGA='1' then
+        fsm_state := S_Idle;
+        start     <= '0';
+        led_io(3) <= '0';
+      else
+        start <= '0';
+        case fsm_state is
+          when S_Idle =>
+            if switch_io(3)='1' then
+              fsm_state := S_start;
+            end if;
+            
+          when S_start =>
+            start <= '1';
+            if done='1' then
+              fsm_state := S_done;
+            end if;
+          
+          when S_done =>
+            start <= '0';
+            fsm_state := S_Idle;
+
+          when others => null;
+        end case;
+        
+        led_io(3) <= we_hog(0);
+
+      end if;
+    end if;
+  end process fsm_stat;
+
+  
+  main: Main_HOG
+    Port map ( start => start,
+               done => done,
+               actived_rsc_z => switch_io(1),
+               mode_rsc_z => led_io(1),
+               actived_triosy_lz => open,
+               mode_triosy_lz => open,
+               mem_Ram_Data_triosy_lz => open,
+               mem_Ram_Hog_triosy_lz => open,
+               clk => clk_VGA, 
+               rst  => rst_VGA,
+               mem_Ram_Data_rsc_singleport_data_in  => open,
+               mem_Ram_Data_rsc_singleport_addr => address_hog_in,
+               mem_Ram_Data_rsc_singleport_re  => open,
+               mem_Ram_Data_rsc_singleport_we => open,
+               mem_Ram_Data_rsc_singleport_data_out => data_hog_in,
+               
+               mem_Ram_Hog_rsc_singleport_data_in  => data_hog_out,
+               mem_Ram_Hog_rsc_singleport_addr => address_hog_out,
+               mem_Ram_Hog_rsc_singleport_re  => open,
+               mem_Ram_Hog_rsc_singleport_we => we_hog(0),
+               mem_Ram_Hog_rsc_singleport_data_out => data_hog_out
+               );
+
+
+  
+  
 
 end architecture STRUCTURE;
 

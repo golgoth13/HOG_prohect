@@ -56,8 +56,8 @@ CCS_MAIN(unsigned int argc, char *argv[])
     cout << "impossible de lire : ../../img/" << file << ".pgm" << endl;
   }
   fichier >> magic_number >> useless >> useless >> useless;
- Ram_X : for(j = 0; j < HEIGHT_RAM_T; j++) {
-  Ram_Y : for(i = 0; i < WIDTH_RAM_T; i++) {
+ Ram_X : for(j = 0; j < HEIGHT_IMAGE_T; j++) {
+  Ram_Y : for(i = 0; i < WIDTH_IMAGE_T; i++) {
       fichier >> useless;
       image[i+WIDTH_RAM_T*j] = useless;
     }
@@ -74,10 +74,10 @@ CCS_MAIN(unsigned int argc, char *argv[])
     CCS_RETURN(1);
   }
   fichier_out << "P2" << endl
-	      << WIDTH_RAM_T << " " << HEIGHT_RAM_T << endl
+	      << WIDTH_IMAGE_T << " " << HEIGHT_IMAGE_T << endl
 	      << "255" << endl;
- Hog_X : for(j = 0; j < HEIGHT_RAM_T; j++) {
-  Hog_Y : for(i = 0; i < WIDTH_RAM_T; i++) {
+ Hog_X : for(j = 0; j < HEIGHT_IMAGE_T; j++) {
+  Hog_Y : for(i = 0; i < WIDTH_IMAGE_T; i++) {
       fichier_out << hog[j*WIDTH_RAM_T+i] << " ";
     }
     fichier_out << endl;

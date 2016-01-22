@@ -17,7 +17,7 @@
 // Additional Comments:
 //
 ////////////////////////////////////////////////////////////////////////////////
-#include "Mem_Ram.h"
+//#include "Mem_Ram.h"
 //a virer pour la synthese
 //#include <iostream>
 #include "HOG_Gradient.h"
@@ -29,7 +29,7 @@ using namespace std;
 void gradient_ver(ac_int<9,false> coord_x,
 		  ac_int<8,false> coord_y,
 		  ac_int<9,true> *gradient_v,
-		  ac_int<8,false> *mem_Ram_Data){
+		  ac_int<8,false> mem_Ram_Data[WIDTH_VGA*HEIGHT_VGA]){
 
   ac_int<8,false> val_b, val_a;
   ac_int<17,false> mem_Ram_addr;
@@ -55,7 +55,7 @@ void gradient_ver(ac_int<9,false> coord_x,
 void gradient_hor(ac_int<9,false> coord_x,
 		  ac_int<8,false> coord_y,
 		  ac_int<9,true> *gradient_h,
-		  ac_int<8,false> *mem_Ram_Data){
+		  ac_int<8,false> mem_Ram_Data[WIDTH_VGA*HEIGHT_VGA]){
 
   ac_int<8,false> val_b, val_a;
   ac_int<17,false> mem_Ram_addr;
@@ -81,7 +81,7 @@ void gradient_pixel(ac_int<9,false> coord_x,
 		    ac_int<8,false> coord_y,
 		    ac_int<9,true>  *gradient_h,
 		    ac_int<9,true>  *gradient_v,
-		    ac_int<8,false> *mem_Ram_Data) {
+		    ac_int<8,false> mem_Ram_Data[WIDTH_VGA*HEIGHT_VGA]) {
 
 
 	gradient_hor(coord_x, coord_y, gradient_h, mem_Ram_Data);

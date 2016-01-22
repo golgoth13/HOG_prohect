@@ -22,7 +22,7 @@
 --    devices, or systems.  Use in such applications are expressly            --
 --    prohibited.                                                             --
 --                                                                            --
---    (c) Copyright 1995-2015 Xilinx, Inc.                                    --
+--    (c) Copyright 1995-2016 Xilinx, Inc.                                    --
 --    All rights reserved.                                                    --
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -43,10 +43,12 @@ LIBRARY XilinxCoreLib;
 ENTITY mem_lum IS
   PORT (
     clka : IN STD_LOGIC;
+    ena : IN STD_LOGIC;
     wea : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     addra : IN STD_LOGIC_VECTOR(16 DOWNTO 0);
     dina : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
     clkb : IN STD_LOGIC;
+    enb : IN STD_LOGIC;
     addrb : IN STD_LOGIC_VECTOR(16 DOWNTO 0);
     doutb : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
   );
@@ -57,10 +59,12 @@ ARCHITECTURE mem_lum_a OF mem_lum IS
 COMPONENT wrapped_mem_lum
   PORT (
     clka : IN STD_LOGIC;
+    ena : IN STD_LOGIC;
     wea : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     addra : IN STD_LOGIC_VECTOR(16 DOWNTO 0);
     dina : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
     clkb : IN STD_LOGIC;
+    enb : IN STD_LOGIC;
     addrb : IN STD_LOGIC_VECTOR(16 DOWNTO 0);
     doutb : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
   );
@@ -78,13 +82,13 @@ END COMPONENT;
       c_byte_size => 9,
       c_common_clk => 0,
       c_default_data => "0",
-      c_disable_warn_bhv_coll => 1,
-      c_disable_warn_bhv_range => 1,
+      c_disable_warn_bhv_coll => 0,
+      c_disable_warn_bhv_range => 0,
       c_enable_32bit_address => 0,
       c_family => "zynq",
       c_has_axi_id => 0,
-      c_has_ena => 0,
-      c_has_enb => 0,
+      c_has_ena => 1,
+      c_has_enb => 1,
       c_has_injecterr => 0,
       c_has_mem_output_regs_a => 0,
       c_has_mem_output_regs_b => 0,
@@ -105,8 +109,8 @@ END COMPONENT;
       c_mem_type => 1,
       c_mux_pipeline_stages => 0,
       c_prim_type => 1,
-      c_read_depth_a => 131072,
-      c_read_depth_b => 131072,
+      c_read_depth_a => 76800,
+      c_read_depth_b => 76800,
       c_read_width_a => 8,
       c_read_width_b => 8,
       c_rst_priority_a => "CE",
@@ -114,7 +118,7 @@ END COMPONENT;
       c_rst_type => "SYNC",
       c_rstram_a => 0,
       c_rstram_b => 0,
-      c_sim_collision_check => "NONE",
+      c_sim_collision_check => "ALL",
       c_use_bram_block => 0,
       c_use_byte_wea => 0,
       c_use_byte_web => 0,
@@ -123,8 +127,8 @@ END COMPONENT;
       c_use_softecc => 0,
       c_wea_width => 1,
       c_web_width => 1,
-      c_write_depth_a => 131072,
-      c_write_depth_b => 131072,
+      c_write_depth_a => 76800,
+      c_write_depth_b => 76800,
       c_write_mode_a => "WRITE_FIRST",
       c_write_mode_b => "WRITE_FIRST",
       c_write_width_a => 8,
@@ -137,10 +141,12 @@ BEGIN
 U0 : wrapped_mem_lum
   PORT MAP (
     clka => clka,
+    ena => ena,
     wea => wea,
     addra => addra,
     dina => dina,
     clkb => clkb,
+    enb => enb,
     addrb => addrb,
     doutb => doutb
   );
