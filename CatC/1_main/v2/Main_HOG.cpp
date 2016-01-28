@@ -71,7 +71,7 @@ void norme_pixel(ac_int<9,false> *norme,
   if (two_square <= incr) {
     result = mysqrt[two_square];
   } else {
-    for (i = 3; i <= PRECISION_RACINE; i++) {
+  norm_loop : for (i = 3; i <= PRECISION_RACINE; i++) {
       if (result == 511 && two_square <= (incr<<1)) {
 	result = mysqrt[i-1] +
 	  (((mysqrt[i] - mysqrt[i-1])*(two_square - incr))>>(i-2));
@@ -115,7 +115,7 @@ void arg_pixel(ac_int<4,false> *arg,
     val  = (gradient_v *val)>>2;
     
     if (val >0) {
-      for (i = N_CLASSES>>1; i > 0; i--) {
+      arg_loop_1 : for (i = N_CLASSES>>1; i > 0; i--) {
 	if (result == 31 && val >= arctan[i-1])
 	  result = i;
       }
@@ -123,7 +123,7 @@ void arg_pixel(ac_int<4,false> *arg,
     if (result == 31 && val >= -1*(arctan[0])) {
       result = 0;
     } else {
-      for (i = -1; i > -1*(N_CLASSES>>1); i--) {
+       arg_loop_2 : for (i = -1; i > -1*(N_CLASSES>>1); i--) {
 	if (result == 31 && val >= -1*(arctan[-i]))
 	  result = i+N_CLASSES;
       }
@@ -161,13 +161,13 @@ void gradient_ver(ac_int<9,false> coord_x,
   ac_int<17,false> mem_Ram_addr;
 
   if(coord_x > 0               &&
-     coord_x < (WIDTH_IMAGE-1) &&
+     coord_x < (320-1) &&
      coord_y > 0               &&
-     coord_y < 511-1) {
+     coord_y < 512-1) {
 
-        mem_Ram_addr = (coord_y+1)*WIDTH_IMAGE + coord_x;
+        mem_Ram_addr = (coord_y+1)*512 + coord_x;
         val_b        = mem_Ram_Data[mem_Ram_addr];
-        mem_Ram_addr = (coord_y-1)*WIDTH_IMAGE + coord_x;
+        mem_Ram_addr = (coord_y-1)*512 + coord_x;
         val_a        = mem_Ram_Data[mem_Ram_addr];
         *gradient_v  = val_a  - val_b ;
 
@@ -187,13 +187,13 @@ void gradient_hor(ac_int<9,false> coord_x,
   ac_int<17,false> mem_Ram_addr;
 
   if(coord_x > 0             &&
-     coord_x < WIDTH_IMAGE-1 &&
+     coord_x < 320-1 &&
      coord_y > 0             &&
-     coord_y < 511-1) {
+     coord_y < 512-1) {
 
-        mem_Ram_addr = (coord_y)*WIDTH_IMAGE + coord_x+1;
+        mem_Ram_addr = (coord_y)*512 + coord_x+1;
         val_b        = mem_Ram_Data[mem_Ram_addr];
-        mem_Ram_addr = (coord_y)*WIDTH_IMAGE + coord_x-1;
+        mem_Ram_addr = (coord_y)*512 + coord_x-1;
         val_a        = mem_Ram_Data[mem_Ram_addr];
         *gradient_h  = val_b - val_a;
 
@@ -236,7 +236,7 @@ void Main_HOG (ac_int<8,false> mem_Ram_Data[WIDTH_VGA*HEIGHT_VGA],
    
     //traitement HOG
   top_loop_y : for (y = 0; y < 512-CELL_HEIGHT; y+= 4) {
-    top_loop_x : for (x = 0; x < WIDTH_IMAGE-CELL_WIDTH; x+= CELL_WIDTH) {
+    top_loop_x : for (x = 0; x < 321-CELL_WIDTH; x+= CELL_WIDTH) {
       top_init_cell : for(k = 0; k < 16; k++) {
 	  cell[k] = 0;
 	}
@@ -268,14 +268,14 @@ void Main_HOG (ac_int<8,false> mem_Ram_Data[WIDTH_VGA*HEIGHT_VGA],
 	}
 
 	cpt = 0;
-	if (val > 1024)
+	if (val*8 > 1024)
 	  val = 1024;
 
 	//write result with normalisation
       top_hog_y : for ( cell_y = 0; cell_y < CELL_HEIGHT; cell_y++){
 	top_hog_x : for ( cell_x = 0; cell_x < CELL_WIDTH; cell_x++){
-	    mem_Hog_addr = (cell_y+y)*WIDTH_VGA + cell_x+x;
-	    mem_Ram_Hog[mem_Hog_addr] = ((val*patern[classe][cpt])>>10); // %1024
+	    mem_Hog_addr = (cell_y+y)*512 + cell_x+x;
+	    mem_Ram_Hog[mem_Hog_addr] = ((8*val*patern[classe][cpt])>>10); // %1024
 	    cpt++;
 	  }
 	}
@@ -290,7 +290,6 @@ void Main_HOG (ac_int<8,false> mem_Ram_Data[WIDTH_VGA*HEIGHT_VGA],
     top_vid_x : for (x = 0; x < WIDTH_IMAGE; x++) {
 	mem_Hog_addr = y*WIDTH_IMAGE + x;
 	mem_Ram_Hog[mem_Hog_addr] = mem_Ram_Data[mem_Hog_addr] ;
-	//mem_Ram_Hog[mem_Hog_addr] = 120;
       }
     }
     
