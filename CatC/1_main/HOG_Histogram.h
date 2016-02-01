@@ -18,7 +18,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 #include "ac_int.h"
-
+#include "Mem_Ram.h"
 
 void norme_pixel(ac_int<8,false> *norme,
 		 ac_int<9,true>  gradient_v,

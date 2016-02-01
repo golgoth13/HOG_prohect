@@ -107,7 +107,7 @@ architecture STRUCTURE of system_top is
 
   component VGA_generator
     Port ( clk        : in STD_LOGIC;
-           btn3       : in STD_LOGIC;								
+           btn3       : in STD_LOGIC;	
            Hsync      : out STD_LOGIC;
            Vsync      : out STD_LOGIC;
            addr       : out STD_LOGIC_VECTOR (16 downto 0);
@@ -251,21 +251,7 @@ begin
                LOCKED   => led_io(0)
                );
 
-  --led_io(2) <= '0';
-  --led_io(3) <= '1';
   
---cam_clk_buf : IBUFG
---	Port map
---   (O => pclk_cam,
---    I => CAMERA_PCLK);
-  
---cam_simu: Camera_Data_Simu
---    Port map ( pclk => pclk_cam,
---			    href => CAMERA_HS,
---           vs => CAMERA_VS,
---           data_out => CAMERA_DATA
---			    );
-
   vga: VGA_generator
     Port map ( clk        => clk_VGA,
                btn3       => push_io(3),
@@ -298,9 +284,7 @@ begin
     data_VGA   <= data_VGA_8(6 downto 2) &
                   data_VGA_8(6 downto 1) &
                   data_VGA_8(6 downto 2);
-    --data_VGA   <= data_VGA_8 &
-    --              data_VGA_8;
-  end process gray_to_rgb;
+   end process gray_to_rgb;
   
   capture: Camera_Capture
     Port map ( pclk     => CAMERA_PCLK,
@@ -320,8 +304,7 @@ begin
   address_VGA_tmp     <= map_addr(address_VGA);
   data_hog_out_tmp    <= data_hog_out(7 downto 0);
   we_hog_not          <= not(we_hog);
-  --data_hog_out_tmp <=  address_hog_out(11 downto 9) &address_hog_out(4 downto 0) ;
-
+ 
   ram1: mem_lum
     Port map ( clka  => CAMERA_PCLK,
                wea   => we,
@@ -329,8 +312,8 @@ begin
                dina  => data_cam_8,
                
                clkb  => clk_VGA,
-               addrb => addr_switch, --address_hog_in_tmp,
-               doutb => data_switch--data_hog_in				
+               addrb => addr_switch, 
+               doutb => data_switch				
                );
   
   ram2: mem_lum
@@ -352,7 +335,7 @@ begin
                    )
   begin
     data_hog_in <= data_switch;
-    -- data_hog_in <= address_hog_in_tmp(5 downto 0) & "00";
+    
     if (switch_io(2) = '1') then
       led_io(2)   <= '1';
       addr_switch <= address_VGA_tmp;

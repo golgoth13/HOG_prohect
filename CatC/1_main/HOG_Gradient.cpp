@@ -13,15 +13,11 @@
 // Dependencies:
 //
 // Revision:
-// Revision 1.01 - File Created
+// Revision 2.01 - File Created
 // Additional Comments:
 //
 ////////////////////////////////////////////////////////////////////////////////
-//#include "Mem_Ram.h"
-//a virer pour la synthese
-//#include <iostream>
 #include "HOG_Gradient.h"
-
 
 //a virer pour la synthese
 using namespace std;
@@ -37,7 +33,7 @@ void gradient_ver(ac_int<9,false> coord_x,
   if(coord_x > 0               &&
      coord_x < (WIDTH_IMAGE-1) &&
      coord_y > 0               &&
-     coord_y < HEIGHT_IMAGE-1) {
+     coord_y < WIDTH_VGA-1) {
 
         mem_Ram_addr = (coord_y+1)*WIDTH_VGA + coord_x;
         val_b        = mem_Ram_Data[mem_Ram_addr];
@@ -63,7 +59,7 @@ void gradient_hor(ac_int<9,false> coord_x,
   if(coord_x > 0             &&
      coord_x < WIDTH_IMAGE-1 &&
      coord_y > 0             &&
-     coord_y < HEIGHT_IMAGE-1) {
+     coord_y < WIDTH_VGA-1) {
 
         mem_Ram_addr = (coord_y)*WIDTH_VGA + coord_x+1;
         val_b        = mem_Ram_Data[mem_Ram_addr];

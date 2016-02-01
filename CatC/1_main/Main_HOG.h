@@ -19,6 +19,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "ac_int.h"
 #include "Mem_Ram.h"
+#include "HOG_Gradient.h"
+#include "HOG_Histogram.h"
 
 /*for test catapult : */
 void Main_HOG (ac_int<8,false> mem_Ram_Data[WIDTH_VGA*HEIGHT_VGA],
