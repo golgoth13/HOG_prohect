@@ -19,8 +19,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "Main_HOG.h"
-//a virer pour catapultc
-//#include "Mem_Ram.h"
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
