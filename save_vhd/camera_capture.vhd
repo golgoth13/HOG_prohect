@@ -34,15 +34,15 @@ library work;
 use work.packageVGA.all;
 
 entity Camera_Capture is
-  Port ( pclk : in STD_LOGIC;
-         reset : in STD_LOGIC;
-         href : in STD_LOGIC;
-         vs_cam : in STD_LOGIC;
-         data_in : in STD_LOGIC_VECTOR (7 downto 0);
-         addr : out STD_LOGIC_VECTOR (16 downto 0);
+  Port ( pclk     : in STD_LOGIC;
+         reset    : in STD_LOGIC;
+         href     : in STD_LOGIC;
+         vs_cam   : in STD_LOGIC;
+         data_in  : in STD_LOGIC_VECTOR (7 downto 0);
+         addr     : out STD_LOGIC_VECTOR (16 downto 0);
          data_out : out STD_LOGIC_VECTOR (15 downto 0);
-         coord : out coordonnee;
-         we : out STD_LOGIC_VECTOR(0 DOWNTO 0));
+         coord    : out coordonnee;
+         we       : out STD_LOGIC_VECTOR(0 DOWNTO 0));
 end Camera_Capture;
 
 architecture Behavioral of Camera_Capture is
@@ -89,7 +89,7 @@ begin
     addr <= pixel.y(8 downto 1) & pixel.x(9 downto 1);
     
     case etat_q is
-      when AttenteFrame => -- Attente du signal vs
+      when AttenteFrame =>          -- Attente du signal vs
         Hcnt_d <= 0;
         Vcnt_d <= 0;
         data_out <= (others => '0');
@@ -97,7 +97,7 @@ begin
           etat_d <= NewFrame;
         end if;
         
-      when NewFrame => -- RAZ coordonnées pixel, addresse et data de sortie
+      when NewFrame =>              -- RAZ coordonnées pixel, addresse et data de sortie
         Hcnt_d <= 0;
         Vcnt_d <= 0;
         data_out <= (others => '0');
@@ -105,33 +105,33 @@ begin
           etat_d <= GetHighFirst;
         end if;
         
-      when GetHighFirst => -- Capture premier octet poids fort RGB de la ligne
+      when GetHighFirst =>          -- Capture premier octet poids fort RGB de la ligne
         data_d <= data_in;
         if href = '1' then
           etat_d <= GetLowWrite;
         end if;
         
-      when GetLowWrite => -- Capture octet poids faible RGB: gggb bbbb
+      when GetLowWrite =>           -- Capture octet poids faible RGB: gggb bbbb
         pixel.x := std_logic_vector(to_unsigned(Hcnt_q,10));
         pixel.y := std_logic_vector(to_unsigned(Vcnt_q,9));
         coord.x <= pixel.x;
         coord.y <= pixel.y;
         addr <= pixel.y(8 downto 1) & pixel.x(9 downto 1); -- Calcul case mémoire stockage du pixel
         data_out(15 downto 0) <= data_in(7 downto 0) & data_q(7 downto 0);
-        we <= "1";			-- Autorisation d'écriture				
+        we <= "1";                  -- Autorisation d'écriture				
         etat_d <= GetHigh;
         
-      when GetHigh => -- Capture octet poids fort RGB: rrrr rggg
+      when GetHigh =>               -- Capture octet poids fort RGB: rrrr rggg
         data_d <= data_in;
         if href = '1' then
           if (Hcnt_q < HD) then
             Hcnt_d <= Hcnt_q+1;						
-          else								-- Attente début nouveau frame
+          else                      -- Attente début nouveau frame
             Hcnt_d <= 0;
           end if;					
           etat_d <= GetLowWrite;
         elsif href = '0' then
-          if (Vcnt_q < VD) then 		-- Début nouvelle ligne
+          if (Vcnt_q < VD) then     -- Début nouvelle ligne
             Hcnt_d <= 0;
             Vcnt_d <= Vcnt_q+1;
             etat_d <= GetHighFirst;

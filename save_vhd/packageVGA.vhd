@@ -15,7 +15,7 @@ constant VM: integer := 523;		-- Taille max verticale
 constant VD: integer := 480;		-- Taille image verticale
 constant VF: integer := 11;		-- Front porch vertical
 constant VB: integer := 31;		-- Back porch vertical
-constant VP: integer := 2;			-- Pulse vertical
+constant VP: integer := 2;		-- Pulse vertical
 
 type coordonnee is
 record

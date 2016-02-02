@@ -35,26 +35,26 @@ use work.packageVGA.all;
 --use UNISIM.VComponents.all;
 
 entity VGA_generator is
-  Port ( clk : in STD_LOGIC;
-         btn3 : in STD_LOGIC;							
-         Hsync : out STD_LOGIC := '0';
-         Vsync : out STD_LOGIC := '0';
-         addr : out STD_LOGIC_VECTOR (16 downto 0) := (others => '0');
-         coord : out coordonnee;
+  Port ( clk        : in STD_LOGIC;
+         btn3       : in STD_LOGIC;						
+         Hsync      : out STD_LOGIC := '0';
+         Vsync      : out STD_LOGIC := '0';
+         addr       : out STD_LOGIC_VECTOR (16 downto 0) := (others => '0');
+         coord      : out coordonnee;
          activeArea : out boolean;
-         reset : out STD_LOGIC);
+         reset      : out STD_LOGIC);
 end VGA_generator;
 
 architecture Behavioral of VGA_generator is
-  signal Hcnt, Vcnt : integer := 0;
-  signal int_x, int_y : integer := 0;	
-  signal Hsync_temp, Vsync_temp : STD_LOGIC := '0';
+  signal Hcnt, Vcnt                 : integer   := 0;
+  signal int_x, int_y               : integer   := 0;	
+  signal Hsync_temp, Vsync_temp     : STD_LOGIC := '0';
   signal activeArea_h, activeArea_v : boolean;
 
   constant Hstart_img : integer := HP+HB;
-  constant Hend_img : integer := HP+HB+HD-1;
+  constant Hend_img : integer   := HP+HB+HD-1;
   constant Vstart_img : integer := VP+VB;
-  constant Vend_img : integer := VP+VB+VD-1;
+  constant Vend_img : integer   := VP+VB+VD-1;
 
 begin
   
@@ -74,13 +74,13 @@ begin
           Vcnt <= 0;
         end if;
       end if;
-      Hsync <= Hsync_temp;
-      Vsync <= Vsync_temp;
+      Hsync   <= Hsync_temp;
+      Vsync   <= Vsync_temp;
       pixel.x := std_logic_vector(to_unsigned(int_x,10)); -- Affectation immédiate
       pixel.y := std_logic_vector(to_unsigned(int_y,9));
       coord.x <= pixel.x; -- Mise à jour des coordonnées du pixel de l'image
       coord.y <= pixel.y;
-      addr <= pixel.y(8 downto 1) & pixel.x(9 downto 1); -- Envoi de l'adresse de la case mémoire à lire
+      addr    <= pixel.y(8 downto 1) & pixel.x(9 downto 1); -- Envoi de l'adresse de la case mémoire à lire
       activeArea <= activeArea_v and activeArea_h;
     end if;
   end process;
@@ -89,10 +89,10 @@ begin
   begin
     if (Hcnt >= Hstart_img and Hcnt <= Hend_img) then -- 144 <= Hcnt <= 783
       activeArea_h <= true;
-      int_x <= Hcnt-Hstart_img; -- Décompte de horizontal pulse et backporch
+      int_x        <= Hcnt-Hstart_img; -- Décompte de horizontal pulse et backporch
     else
       activeArea_h <= false;
-      int_x <= 0;
+      int_x         <= 0;
     end if;
   end process;
 
@@ -100,10 +100,10 @@ begin
   begin
     if (Vcnt >= Vstart_img and Vcnt <= Vend_img) then -- 33 <= Vcnt <= 512
       activeArea_v <= true;
-      int_y <= Vcnt-Vstart_img; -- Décompte de vertical pulse et backporch
+      int_y        <= Vcnt-Vstart_img; -- Décompte de vertical pulse et backporch
     else
       activeArea_v <= false;
-      int_y <= 0;
+      int_y        <= 0;
     end if;
   end process;  
 
