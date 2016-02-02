@@ -35,8 +35,74 @@ void hog(string nom_fichier, int pattern[N_CLASSES][CELL_SIZE*CELL_SIZE])
     histo.affiche_graphique(nom_fichier, pattern);
 }
 
+void precision_arctangeante()
+{
+    for (int precision = 1; precision <= 2048; precision*=2) {
+        {
+            Affine calcul;
+            calcul.writeArctangeante(precision);
+        }
+        Affine calcul;
+        cout << "Coefficient = " << setw(4) << precision;
+        for (int borne = 2; borne <= 256; borne*=2) {
+            int compare = 0;
+            int cpt = 0;
+            for (int j = borne; j >= -1*borne; j--) {
+                for (int i = -1*borne; i <= borne; i++) {
+                    if (i != 0) {
+                        double val = round(8.0*atan(j/(double)i)/(M_PI/2));
+                        if (val < 0)
+                            val += 16;
+                        if (calcul.arctangeante(j, i) != val)
+                            compare++;
+                        cpt++;
+                    }
+                }
+            }
+            cout << ", borne = " << borne << " : " << setw(3) << 100 - (100*compare/cpt) << "%";
+        }
+        cout << endl;
+    }
+}
+
+void precision_racine()
+{
+    {
+        Affine calcul;
+        calcul.writeRacine();
+    }
+    Affine calcul;
+    for (int borne = 1; borne <= 131072; borne *= 2) {
+        double compare = 0;
+        int cpt = 0;
+        for (int i = borne/2; i <= borne; i++) {
+            if (calcul.racine(i) != round(sqrt(i)))
+                compare += (round(sqrt(i)) - calcul.racine(i)) / (double)round(sqrt(i));
+            cpt++;
+        }
+        cout << "Intervalle = [" << setw(5) << borne/2 << "," << setw(6) << borne << "] : " << setw(3) << 100 - (100*compare/cpt) << "%" << endl;
+    }
+}
+
+void precision_inverse()
+{
+    Affine calcul;
+    double compare = 0;
+    int cpt = 0;
+    for (int i = 1; i < 256; i++) {
+        if ((double)calcul.inverse(i) / PRECISION_INVERSE != 1.0/i)
+        compare += abs((double)calcul.inverse(i) / PRECISION_INVERSE - 1.0/i) / (1.0/i);
+        cpt++;
+    }
+    cout << "Precision inverse : " << setw(3) << 100 - (100*compare/cpt) << "%" << endl;
+}
+
 int main()
 {
+    //precision_arctangeante();
+    //precision_racine();
+    //precision_inverse();
+
     // Lecture patterns histogramme
     string magic_number;
     int header;
