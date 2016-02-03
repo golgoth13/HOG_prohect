@@ -97,8 +97,11 @@ void precision_inverse()
     cout << "Precision inverse : " << setw(3) << 100 - (100*compare/cpt) << "%" << endl;
 }
 
-int main()
-{
+int main() {
+  
+    //A décommenter pour visualiser la comparaison des résultats de 
+    //l'approximation linéaire :
+
     //precision_arctangeante();
     //precision_racine();
     //precision_inverse();
@@ -138,8 +141,13 @@ int main()
         calcul.writeInverse();
     }
 
-    hog("barbara", pattern);
+    //fichiers traités ajoutés ou supprimé si necesaire (les fichiers doivent 
+    //etre contenus dans ../img
+
+    //hog("barbara", pattern);
+    hog("barbara-340", pattern);
     hog("empire", pattern);
     hog("groupe", pattern);
-    hog("lena", pattern);
+    //hog("lena", pattern);
+    hog("lena-340", pattern);
 }
