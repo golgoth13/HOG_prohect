@@ -98,8 +98,8 @@ void precision_inverse()
 }
 
 int main() {
-  
-    //A décommenter pour visualiser la comparaison des résultats de 
+
+    //A décommenter pour visualiser la comparaison des résultats de
     //l'approximation linéaire :
 
     //precision_arctangeante();
@@ -141,13 +141,13 @@ int main() {
         calcul.writeInverse();
     }
 
-    //fichiers traités ajoutés ou supprimé si necesaire (les fichiers doivent 
+    //fichiers traités ajoutés ou supprimés si necesaire (les fichiers doivent
     //etre contenus dans ../img
 
-    //hog("barbara", pattern);
-    hog("barbara-340", pattern);
+    hog("barbara", pattern);
+    hog("barbara-320", pattern);
     hog("empire", pattern);
     hog("groupe", pattern);
-    //hog("lena", pattern);
-    hog("lena-340", pattern);
+    hog("lena", pattern);
+    hog("lena-320", pattern);
 }

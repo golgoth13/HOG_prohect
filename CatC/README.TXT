@@ -1,4 +1,4 @@
-*******************************************************************************
+﻿*******************************************************************************
 ** Hans Julien, Perraud Frédéric                       3A SLE ENSIMAG 2015-2016
 *******************************************************************************
 	
@@ -29,7 +29,7 @@ contenue dans le répertoire ../img. On peut préciser celle désirée dans le
 fichier tp_Main.cpp (ligne 51) et le résultat sera stocké dans le répertoire
 ../res (pour une éventuelle comparaison avec l'algorithme natif).
        Pour effacer les fichiers objet, l'executable : make clean. Pour 
-également éffacer les fichiers résultats et *.*~ : make clean-all.
+également effacer les fichiers résultats et *.*~ : make clean-all.
 	     
 **Contenu détaillé :
 
@@ -44,6 +44,6 @@ nécessaires aux approximations linéaires.
 horizontal d'un pixel.
 	-HOG_Histogram : contient les fonctions calculant la norme et l'argument
 d'un pixel
-	-Main_HOG : fonction principale implémenttant l'algorithme HOG et le
+	-Main_HOG : fonction principale implémentant l'algorithme HOG et le
 affiche résultat. L'argument "mode" permet de choisir le résultat de la sortie :
 avec l'algorithme ou la simple copie de l'image d'entrée. 
