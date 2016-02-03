@@ -73,14 +73,14 @@ void Main_HOG (ac_int<8,false> mem_Ram_Data[WIDTH_VGA*HEIGHT_VGA],
 				}
 
 				cpt = 0;
-				if (val > 1024)
+				if (val*4 > 1024)
 					val = 1024;
 
 				//write result with normalisation
 			top_hog_y : for ( cell_y = 0; cell_y < CELL_HEIGHT; cell_y++){
 				top_hog_x : for ( cell_x = 0; cell_x < CELL_WIDTH; cell_x++){
 						mem_Hog_addr = (cell_y+y)*WIDTH_VGA + cell_x+x;
-						mem_Ram_Hog[mem_Hog_addr] = ((val*patern[classe][cpt])>>10);
+						mem_Ram_Hog[mem_Hog_addr] = ((4*val*patern[classe][cpt])>>10);
 						cpt++;
 					}
 				}
