@@ -10,7 +10,7 @@
 
 	Copier le fichier sur la carte SD de la carte ZYBO et mettre sous 
 tension. Les fonctionnalitées sont les suivantes :
-	- switch 0 : permet d'activer ou non le module VGA_generator. On peut 
+	- switch 0 : permet d'activer ou non le module multiplexer_VGA. On peut 
 soit choisir de le laisser activer (recopie du contenue de la RAM vers le 
 périphérique VGA) soit en appuyant sur le bouton 1 ou 2 afficher les mires
 verticales ou horizontales.
