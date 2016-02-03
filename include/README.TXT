@@ -2,5 +2,11 @@
 ** Hans Julien, Perraud Frédéric                       3A SLE ENSIMAG 2015-2016
 *******************************************************************************
 
-Répertoire acceuillant les fichiers objets de la compilation de Main_Hog
-(Catapult C)
+**Résumé :
+
+	Contient les librairies à la compilation "hors ligne" de Catapult C". 
+
+**Contenu détaillé :
+
+	- ac_int.h
+	- mc_scverify.h

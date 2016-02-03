@@ -1,6 +1,10 @@
 *******************************************************************************
 ** Hans Julien, Perraud Frédéric                       3A SLE ENSIMAG 2015-2016
 *******************************************************************************
+TODO : ajouté les répertoires obj et res
 
-Répertoire acceuillant les fichiers objets de la compilation de Main_Hog
-(Catapult C)
+**Résumé :
+
+**Utlisation :
+
+**Contenu détaillé :

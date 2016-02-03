@@ -4,7 +4,8 @@
 
 **Résumé :
 
-	Contient le bit stream du projet après le passage dans ISE. 
+	Contient le bit stream du projet après le passage dans ISE.
+ 
 **Utlisation :
 
 	Copier le fichier sur la carte SD de la carte ZYBO et mettre sous 
