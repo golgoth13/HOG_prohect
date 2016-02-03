@@ -49,6 +49,7 @@ CCS_MAIN(unsigned int argc, char *argv[]) {
 	//write test file in input memory : the file must be present in ../img 
 	//directory and its size must be 320x240 in ascii pgm format
 	string file = "barbara-320";
+	//string file = "empire";
 	string magic_number;
 	int value;
 	ifstream fichier(("../img/" + file + ".pgm").c_str(), ios::in);
