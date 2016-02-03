@@ -4,8 +4,10 @@
 	
 **Résumé :
 	
-	Fichiers de configuration Catapult C pour la mise en oeuvre de l'algorithme HOG (Histogram Of Gradient). Ce répertoire contient également un fichier de test bench servant à la simulation ModelSim dans Catapult C et à l'exécution 
-hors ligne du programme grace au Makefile.
+	Fichiers de configuration Catapult C pour la mise en oeuvre de 
+l'algorithme HOG (Histogram Of Gradient). Ce répertoire contient également un 
+fichier de test bench servant à la simulation ModelSim dans Catapult C et à 
+l'exécution hors ligne du programme grace au Makefile.
 
 **Utlisation :
 	
@@ -16,7 +18,7 @@ Pour ce projet, les contraintes à préciser sont pour l'architecture :
      -
      -
         Pour effectuer une simulation dans Catapult C, il faudra cocher dans les
-options scverify en précisant les répertoires /li64 et /usr/gnu... dans ...
+options "sc_verify" en précisant les répertoires /li64 et /usr/gnu... dans ...
 Il faudra également copier les répertoire ../img et ../res dans le répertoire 
 de travail de Catapult C pour que l'image soit réellement chargée. Par défaut
 Catapult C chargera une image noire.

@@ -9,7 +9,11 @@ ISE pour générer le bit-stream du projet HOG.
 
 **Utlisation :
 
-	Copier et écraser les fichiers dans le répertoire du projet "zybo_cam" de ISE. Ajouter les fichiers correspondnat aux points d'interrogations (mem_lum.ngc, Main_Hog.edf, etc. Recompiler le projet puis lancer le script bootgen : le fichier boot.bin généré peut etre copié directement sur la carte SD et testé.
+	Copier et écraser les fichiers dans le répertoire du projet "zybo_cam" 
+de ISE. Ajouter les fichiers correspondant aux points d'interrogations 
+(mem_lum.ngc, Main_Hog.edf, etc. Recompiler le projet puis lancer le script 
+bootgen : le fichier boot.bin généré peut etre copié directement sur la carte SD
+et testé.
 
 **Contenu détaillé :
 

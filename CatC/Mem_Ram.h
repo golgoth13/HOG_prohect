@@ -29,8 +29,8 @@
 #define CELL_WIDTH   4
 #define CELL_HEIGHT  4
 #define CELL_SIZE    16
-//Dépand de la qualité de la caméra : 1 pour les tests 4 au maximum
-#define COEFF_LUM    2
+//Dépand de la qualité de la caméra : 1 pour les tests 8 au maximum
+#define COEFF_LUM    4
 
 //définition de 16 type de pattern possible pour une cellule
 static  const ac_int<8,false> patern[CELL_SIZE][CELL_SIZE] = {
