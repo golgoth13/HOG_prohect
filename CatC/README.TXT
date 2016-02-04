@@ -16,9 +16,14 @@ l'exécution hors ligne du programme grace au Makefile.
 	Pour utiliser les fichiers dans Catapult C, il suffit d'ajouter dans un
 nouveau projet tout les fichier *.cpp et *.h en précisant d'ignorer tb_Main.cpp.
 Pour ce projet, les contraintes à préciser sont pour l'architecture :
-     - TODO mettre se qui va bien     
-     -
-     -
+     - Technologie : Presision_2012b/Xilinx -> Artix7 puis selectionner "RAM 
+single port" et la fréquence d'horloge (ici 24 MHz)    
+     - Dans l'onglet "advanced" préciser 131072 dans le formulaire "array size"
+     - Dans le menu : set_option->Flows->Precision décocher l'option "Add IO 
+Pads" 
+     - Dans l'ongelet Handshake cocher les onglets  "Start..", "Done...", et 
+"Transaction..."
+
         Pour effectuer une simulation dans Catapult C, il faudra cocher dans les
 options "sc_verify" en précisant les répertoires /li64 et /usr/gnu... dans ...
 Il faudra également copier les répertoire ../img et ../res dans le répertoire 
