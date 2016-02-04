@@ -16,7 +16,7 @@ l'exécution hors ligne du programme grace au Makefile.
 	Pour utiliser les fichiers dans Catapult C, il suffit d'ajouter dans un
 nouveau projet tout les fichier *.cpp et *.h en précisant d'ignorer tb_Main.cpp.
 Pour ce projet, les contraintes à préciser sont pour l'architecture :
-     - Technologie : Presision_2012b/Xilinx -> Artix7 puis selectionner "RAM 
+     - Technologie : Precision_2012b/Xilinx -> Artix7 puis selectionner "RAM 
 single port" et la fréquence d'horloge (ici 24 MHz)    
      - Dans l'onglet "advanced" préciser 131072 dans le formulaire "array size"
      - Dans le menu : set_option->Flows->Precision décocher l'option "Add IO 
@@ -26,11 +26,11 @@ Pads"
 
         Pour effectuer une simulation dans Catapult C, il faudra cocher dans les
 options "sc_verify" en précisant les répertoires /li64 et /usr/gnu... dans ...
-Il faudra également copier les répertoire ../img et ../res dans le répertoire 
+Il faudra également copier les répertoires ../img et ../res dans le répertoire 
 de travail de Catapult C pour que l'image soit réellement chargée. Par défaut
 Catapult C chargera une image noire.
 
-        Pour simuler le fonctionnement de l'algorithme, il suffit compiler le 
+        Pour simuler le fonctionnement de l'algorithme, il suffit de compiler le 
 projet avec le Makefile fournit : on peut choisir d'utiliser la librairie ac_int
 de Catapult C ou celle fournie (ligne 7 du Makefile). Ce dernier utilise le 
 fichier tp_Main.cpp pour charger en mémoire une image 320x240 au format pgm 

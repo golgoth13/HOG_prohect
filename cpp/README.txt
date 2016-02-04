@@ -12,13 +12,13 @@ L'execution du programme place les résultats dans le répertoire ../res : la
 première image est l'image originale, la deuxième est celle obtenue avec 
 l'algorithme avec approximation linéaire sur des entiers et la dernière celle 
 obtenue avec des calculs en double précision. Par ailleurs un certain nombre
-d'autre fonctions sont également implantées en début du programme main()
+d'autres fonctions sont également implantées en début du programme main()
 (voir plus bas) pour donner le degré de précision des approximations linéaires.
 
 **Utilisation :
 	 
-	Pour utiliser la fonction, utiliser la commande make et executer le
-binaire ./exec_cpp. Les fichiers spécifiés ligne 146 (et présent dans le
+	Pour utiliser la fonction, utiliser la commande make et exécuter le
+binaire ./exec_cpp. Les fichiers spécifiés ligne 146 (et présents dans le
 répertoire ../img) du main.cpp seront traités et le résultat sauvegardé dans le
 répertoire ../res.
 	Pour visualiser (dans la console) le résultat de la comparaison entre le

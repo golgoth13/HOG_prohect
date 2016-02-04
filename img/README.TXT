@@ -1,4 +1,4 @@
-*******************************************************************************
+﻿*******************************************************************************
 ** Hans Julien, Perraud Frédéric                       3A SLE ENSIMAG 2015-2016
 **
 **img
@@ -6,7 +6,7 @@
 
 **Résumé :
 
-	Contient les images au format pgm nécessaires au tests. Seules 
+	Contient les images au format pgm nécessaires aux tests. Seules 
 barbara-320.pgm, empire.pgm et lena-320.pgm peuvent fonctionner avec les 
 fichiers Catapult C.
 
