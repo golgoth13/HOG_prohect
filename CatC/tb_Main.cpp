@@ -73,7 +73,7 @@ Ram_X : for(j = 0; j < HEIGHT_IMAGE_T; j++) {
 
 
 	//write output memory into output file
-	ofstream fichier_out(("../res/ " + file + "_histo_CatC.pgm").c_str(), ios::out);
+	ofstream fichier_out(("../res/" + file + "_histo_CatC.pgm").c_str(), ios::out);
 	if(!fichier_out) {
 		cerr << "impossible d'écrire : " << file << "_histo.pgm" << endl;
 		CCS_RETURN(1);

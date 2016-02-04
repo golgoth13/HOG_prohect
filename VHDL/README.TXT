@@ -22,7 +22,8 @@ la mémoire RAM vidéo.
    	- clk_pll.vhd : IP permettant l'adapatation de l'horloge originelle
 (124MHz) vers une horloge adaptée à la cadence de la camera et du VGA
 	- Main_HOG : IP générée via le plug-in Précision (black-box décrite dans
-le système top
+le système top) : la version *_roll.edf est non optimée mais la version 
+*_unroll l'es. Renommer l'une des deux en Main_Hog.edf pour l'intégrée au projet
    	- mem_lum.ngc : IP des deux RAM utilisées (Vidéo et VGA) 320x240 8
 bits. Black-box décrite dans le fichier mem_lum.vhd.
 	- multiplexer_RGB : IP gérant l'activation du module VGA_generator, de 
