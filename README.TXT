@@ -1,7 +1,7 @@
 ﻿*******************************************************************************
 ** Hans Julien, Perraud Frédéric                       3A SLE ENSIMAG 2015-2016
 *******************************************************************************
-
+ 
 **Résumé :
 
 	Contient les différentes sources nécesssaires à la compilation, les 
